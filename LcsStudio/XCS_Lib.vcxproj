@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E7B3EE2F-143F-4FB2-B11E-5DDDC5583AC3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\binary_action.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\binary_inputs.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\boolean_action.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\dummy_action.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\experiment_mgr.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\fsm_env.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\generic.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\grid_env.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\integer_action.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\multiplexer_env.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\parity_env.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\pf\base.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\pf\nlms.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\pf\utility.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\real_functions_env.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\real_inputs.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\real_interval_condition.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\ternary_condition.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\utility\mm2.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\utility\moving_average.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\woods2_env.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\woods_env.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier_system.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcsf_main.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier_system.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_config_mgr2.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_main.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_random.cpp" />
+    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\lcs\xcslib-1.1\docs\def\doxygen.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\action_base.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\binary_action.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\binary_inputs.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\boolean_action.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\condition_base.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\dummy_action.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\environment_base.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\experiment_mgr.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\fsm_env.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\generic.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\grid_env.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\inputs_base.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\integer_action.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\interval.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\multiplexer_env.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\parity_env.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\pf\base.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\pf\nlms.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\pf\utility.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\prediction_functions.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\real_functions_env.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\real_inputs.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\real_interval_condition.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\rl_definitions.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\ternary_condition.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\woods2_env.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\woods_env.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier_system.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier_system.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_config_mgr2.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_definitions.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_random.hpp" />
+    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_utility.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

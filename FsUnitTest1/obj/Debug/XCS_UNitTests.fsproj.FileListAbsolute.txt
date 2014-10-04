@@ -1,0 +1,12 @@
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\FsUnitTest1.dll.config
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\FsUnitTest1.XML
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\FsUnitTest1.dll
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\FsUnitTest1.pdb
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\FSharp.Core.dll
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\XCS.dll
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\XCS.pdb
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\XCS.xml
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\bin\Debug\FSharp.Core.xml
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\obj\Debug\XCS_UNitTests.fsprojResolveAssemblyReference.cache
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\obj\Debug\FsUnitTest1.dll
+C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\FsUnitTest1\obj\Debug\FsUnitTest1.pdb
