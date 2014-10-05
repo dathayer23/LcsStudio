@@ -16,6 +16,7 @@
 *.orig
 *.opensdf
 *.ldf
+*.sdf
 [Rr]elease/
 [Dd]ebug/
 [Oo]bj/*
