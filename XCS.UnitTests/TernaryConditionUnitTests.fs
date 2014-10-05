@@ -14,11 +14,12 @@ type UnitTest() =
 
     [<TestMethod>]
     member __.``Set String Value Returns Same String from TernaryCondition`` () = 
-      let pat = Array.init 15 (fun _ -> classifierValue.Random true)
-      let str = System.String(Array.map(fun v -> charOfValue v) pat)
-      let testVal = new TernaryCondition(TrinaryPattern(pat), Parameters())
-      let testString = testVal.StringValue()
-      Assert.AreEqual(str, testString)
+      let ClassifierValuesReturnIdenticalStringFromTernaryCondition(pat:classifierValue[]) =
+         let str = System.String(Array.map(fun v -> charOfValue v) pat)
+         let testVal = new TernaryCondition(TrinaryPattern(pat), Parameters())
+         let testString = testVal.StringValue()
+         Assert.AreEqual(str, testString)
+      Check.VerboseThrowOnFailure ClassifierValuesReturnIdenticalStringFromTernaryCondition
 
     [<TestMethod>]
     member __.``Generic String IO Roundtrip is Identity``() = 
@@ -27,7 +28,7 @@ type UnitTest() =
           let pattern = tripat.ToString()
           let cond = new TernaryCondition(pattern, Parameters())
           let pattern2 = cond.StringValue()
-          pattern2 = pattern
+          Assert.AreEqual(pattern2, pattern)
 
        Check.VerboseThrowOnFailure StringRoundtrip
 
@@ -35,6 +36,6 @@ type UnitTest() =
     member __.``Randomized Ternary Pattern has same size as original``() =
        let RandomPatternHasSameSize (tripat:TrinaryPattern) = 
           let pattern2 = tripat.Random()
-          tripat.Size = pattern2.Size
+          Assert.AreEqual(tripat.Size, pattern2.Size)
 
        Check.VerboseThrowOnFailure RandomPatternHasSameSize
