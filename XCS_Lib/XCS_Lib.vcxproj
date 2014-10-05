@@ -10,13 +10,219 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="action_base.hpp">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="binary_action.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="binary_inputs.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="boolean_action.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="condition_base.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="dummy_action.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="environment_base.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="experiment_mgr.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="fsm_env.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="generic.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="grid_env.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="inputs_base.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="integer_action.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="interval.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="multiplexer_env.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="parity_env.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="pf\base.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="pf\nlms.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="pf\utility.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="prediction_functions.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="real_functions_env.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="real_inputs.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="real_interval_condition.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="rl_definitions.hpp">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ternary_condition.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="woods2_env.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="woods_env.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcsf_classifier.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcsf_classifier_system.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcs_classifier.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcs_classifier_system.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcs_config_mgr2.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcs_definitions.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcs_random.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="xcs_utility.hpp">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="binary_action.cpp">
+      <DeploymentContent>false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="binary_inputs.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="boolean_action.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="dummy_action.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="experiment_mgr.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="fsm_env.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="generic.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="grid_env.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="integer_action.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="multiplexer_env.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="parity_env.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pf\base.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pf\nlms.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pf\utility.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="real_functions_env.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="real_inputs.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="real_interval_condition.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ternary_condition.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="utility\mm2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="utility\moving_average.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="woods2_env.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="woods_env.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcsf_classifier.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcsf_classifier_system.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcsf_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcs_classifier.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcs_classifier_system.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcs_config_mgr2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcs_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcs_random.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xcs_utility.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A74F5291-32E3-462A-BDB9-1021833E26DA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
@@ -70,79 +276,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\binary_action.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\binary_inputs.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\boolean_action.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\dummy_action.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\experiment_mgr.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\fsm_env.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\generic.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\grid_env.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\integer_action.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\multiplexer_env.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\parity_env.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\pf\base.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\pf\nlms.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\pf\utility.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\real_functions_env.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\real_inputs.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\real_interval_condition.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\ternary_condition.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\utility\mm2.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\utility\moving_average.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\woods2_env.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\woods_env.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier_system.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcsf_main.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier_system.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_config_mgr2.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_main.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_random.cpp" />
-    <ClCompile Include="..\..\..\..\lcs\xcslib-1.1\xcs_utility.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\..\lcs\xcslib-1.1\docs\def\doxygen.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\action_base.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\binary_action.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\binary_inputs.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\boolean_action.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\condition_base.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\dummy_action.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\environment_base.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\experiment_mgr.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\fsm_env.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\generic.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\grid_env.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\inputs_base.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\integer_action.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\interval.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\multiplexer_env.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\parity_env.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\pf\base.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\pf\nlms.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\pf\utility.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\prediction_functions.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\real_functions_env.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\real_inputs.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\real_interval_condition.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\rl_definitions.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\ternary_condition.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\woods2_env.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\woods_env.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcsf_classifier_system.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_classifier_system.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_config_mgr2.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_definitions.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_random.hpp" />
-    <ClInclude Include="..\..\..\..\lcs\xcslib-1.1\xcs_utility.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

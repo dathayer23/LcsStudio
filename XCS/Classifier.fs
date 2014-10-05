@@ -2,6 +2,7 @@
 
 open Microsoft.FSharp.Core.Operators
 open Base
+open Interfaces
 open Action
 open ConditionBase
 
@@ -23,18 +24,19 @@ module Classifier =
    let inline randomAction opint 
          = (^a : (static member RandomAction : int option -> ^a) opint) 
 
-   type classifier<'TCond, 'TAction when 'TCond :> CondBase and 'TAction :> ActionBase>(cond , act) = 
+   type classifier//<'Action, 'TCond, 'TAction 
+      //when 'TCond :> ICondition 
+      //and 'TAction :> IAction<'Action>>
+      (cond , act) = 
+
       static let classData = new StaticClassifierData("xcs_classifier","classifier")
 
-      let condition : 'TCond = cond
-      let action : 'TAction = act
-      member x.Dummy = ()
+      let (condition : ICondition) = cond
+      let (action : IAction<int>) = act
       member x.ClassName : string = classData.ClassName
       member x.TagName = classData.TagName
-      member x.Random() = 
-         let new_cond : 'TCond = (condition : #CondBase).RandomCondition None
-         let new_action : 'TAction = action.RandomAction None
-         new classifier<_,_>(new_cond, new_action)
-
+      
+      member x.Random() =  new classifier(condition.RandomCondition None, action.RandomAction None)
+      
       
       

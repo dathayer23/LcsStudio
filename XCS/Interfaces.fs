@@ -9,7 +9,7 @@ module Interfaces =
    type recombinationType = Uniform | SinglePoint | DoublePoint 
 
    type IPattern<'v> =
-      abstract Size : uint32
+      abstract Size : int32
       abstract Pattern : 'v array 
       
       
@@ -37,3 +37,10 @@ module Interfaces =
    type IStreaming<'a> = 
       abstract ToString : unit -> string
       abstract WriteToStream : Stream -> Stream
+
+   type IAction<'a> = 
+      abstract Value : 'a with get, set
+      abstract RandomAction : 'a option -> IAction<'a>
+
+   type ICondition = 
+      abstract RandomCondition : int option -> ICondition
