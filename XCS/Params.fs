@@ -32,9 +32,9 @@ module Params =
          then ((tokens.[0], param.FromString(tokens.[1])))
          else ("Error", Error(sprintf "invalid string: [%s]" str))
 
-   type Parameters() = 
-      let mutable parameters: namedParam list = []
-
+   type Parameters(``params``) = 
+      let mutable parameters: namedParam list = ``params``
+      new () = Parameters([])
       member x.Exists name = 
          match List.tryFind (fun (nm, pm) -> nm = name ) parameters with 
          | Some _ -> true

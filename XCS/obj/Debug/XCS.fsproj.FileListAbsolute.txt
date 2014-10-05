@@ -8,3 +8,7 @@ C:\Users\v-datha\documents\visual studio 2013\Projects\LcsStudio\XCS\obj\Debug\X
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\XCS.XML
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.pdb
+C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\XCS.dll
+C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\XCS.pdb
+C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\FSharp.Core.dll
+C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\FSharp.Core.xml

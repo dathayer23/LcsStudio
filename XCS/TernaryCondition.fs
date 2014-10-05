@@ -35,9 +35,12 @@ module TernaryCondition =
          member x.Size = size
          member x.Pattern = pattern
 
+      member x.Size = (x :> IPattern<classifierValue>).Size
+      member x.Pattern = (x :> IPattern<classifierValue>).Pattern
       //that can be randomized 
       interface IRandomizable<TrinaryPattern> with
          member x.Random() = new TrinaryPattern(Array.init ((int)(x :> IPattern<_>).Size) (fun _ -> classifierValue.Random()))
+      member x.Random() = (x :> IRandomizable<TrinaryPattern>).Random()
          
    let GetMutationType i = 
       match i with 
@@ -49,7 +52,7 @@ module TernaryCondition =
 //   let GetCrossoverType i = 
 //      match i with 
 //      | 0 -> 
-   type TernaryCondition(width:int32, pat, parms:Parameters) =
+   type TernaryCondition(pat, parms:Parameters) =
       static let classData = new ClassData("TernaryCondition", "condition:Ternary")
       
       let mutable dontCareProb : double = parms.TryGetDouble "DontCareProb" 0.25
@@ -58,12 +61,12 @@ module TernaryCondition =
       let mutable flagMutationWithDontCare = parms.TryGetBool "FlagMutationWithDontCare" true
       let mutable pattern = pat
       
-      new (pat: TrinaryPattern, parms) = new TernaryCondition((pat :> IPattern<_>).Size, pat, parms)
-      //new (size) = new TernaryCondition(size, (Array.init size (fun _ -> classifierValue.Random true), [])
-
+      new (size: int) = TernaryCondition(TrinaryPattern(Array.init size (fun _ -> classifierValue.Random true)), Parameters())
+      //new (pat: TrinaryPattern, parms) = new TernaryCondition((pat :> IPattern<_>).Size, pat, parms)
+      
       interface IPattern<classifierValue> with
          member x.Pattern = (pattern :> IPattern<_>).Pattern
-         member x.Size = width
+         member x.Size = Array.length (pattern :> IPattern<_>).Pattern
       
       member x.Size = (x :> IPattern<classifierValue>).Size
       member x.Pattern = (x :> IPattern<classifierValue>).Pattern
@@ -137,7 +140,7 @@ module TernaryCondition =
 
             (new TernaryCondition(TrinaryPattern(pat), parms))
 
-      member this.Recombine (y:CondBase) recombType =
+      member this.Recombine (y:TernaryCondition) recombType =
          assert (this.Size = y.Size)
          let uniformCrossover (x:TernaryCondition) (y:TernaryCondition) = 
             Array.map2 
@@ -155,16 +158,16 @@ module TernaryCondition =
             let pp1,pp2 = if p1 > p2 then p2,p1 else p1, p2
             Array.mapi2 (fun i xv yv -> if i > pp1 && i < pp2 then yv else xv) x.Pattern y.Pattern
             
-         match y with 
-         | :? TernaryCondition as cond -> 
-            let pat = 
-               match recombType with 
-               | Uniform ->  uniformCrossover this cond
-               | OnePoint -> singlePointCrossover this cond
-               | TwoPoint -> twoPointCrossover this cond
+         //match y with 
+         //| :? TernaryCondition as cond -> 
+         let pat = 
+            match recombType with 
+            | Uniform ->  uniformCrossover this y
+            | OnePoint -> singlePointCrossover this y
+            | TwoPoint -> twoPointCrossover this y
 
-            (new TernaryCondition(pat, parms)) :> CondBase 
-         | _ -> raise (TernaryConditionException "Invalid pattern type in Match function")
+         (new TernaryCondition(TrinaryPattern(pat), parms)) //:> CondBase 
+         //| _ -> raise (TernaryConditionException "Invalid pattern type in Match function")
 
       member x.SetStringValue (str:string) = 
          do pattern <- TrinaryPattern(Array.map (fun ch -> valueOfChar ch) (str.ToCharArray()))
@@ -172,15 +175,16 @@ module TernaryCondition =
 
       member x.StringValue() = Array.map (fun v -> charOfValue v) x.Pattern |> fun (chs:char []) -> new String(chs)
 
-      member x.SubsumedBy (y:CondBase) = 
+      member x.SubsumedBy (y:TernaryCondition) = 
          assert (x.Size = y.Size)
-         match y with 
-         | :? TernaryCondition as cond -> 
-               x.Matches cond && cond.IsMoreGeneralThan x
-         | _ -> raise (TernaryConditionException "Invalid pattern type in SubsumedBy function")
+         //match y with 
+         //| :? TernaryCondition as cond -> 
+         x.Matches y && y.IsMoreGeneralThan x
+         //| _ -> raise (TernaryConditionException "Invalid pattern type in SubsumedBy function")
 
-      member x.IsMoreGeneralThan (y:CondBase) = 
+      member x.IsMoreGeneralThan (y:TernaryCondition) = 
          assert (x.Size = y.Size)
-         match y with 
-         | :? TernaryCondition as cond -> Array.forall2 (fun xv yv -> xv = DontCare || xv = yv) x.Pattern cond.Pattern
+         Array.forall2 (fun xv yv -> xv = DontCare || xv = yv) x.Pattern y.Pattern
+         //match y with 
+         //| :? TernaryCondition as cond -> Array.forall2 (fun xv yv -> xv = DontCare || xv = yv) x.Pattern cond.Pattern
             
