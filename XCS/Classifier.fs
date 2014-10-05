@@ -18,11 +18,11 @@ module Classifier =
             do nextId <- nextId + 1
             ret)
    
-   let inline randomCond opint :  ^a
-         = (^a : (static member RandomCond : int option -> ^a) opint) 
-
-   let inline randomAction opint 
-         = (^a : (static member RandomAction : int option -> ^a) opint) 
+//   let inline randomCond opint :  ^a
+//         = (^a : (static member RandomCond : int option -> ^a) opint) 
+//
+//   let inline randomAction opint 
+//         = (^a : (static member RandomAction : int option -> ^a) opint) 
 
    type classifier//<'Action, 'TCond, 'TAction 
       //when 'TCond :> ICondition 

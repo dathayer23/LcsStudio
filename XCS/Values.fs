@@ -32,7 +32,7 @@ module Values =
          | 3 -> DontCare
        
        static member Random() = classifierValue.Random true
-       static member OfChar c = match c with | '0' -> Zero | '1' -> One | '?' -> DontCare | _ -> failwith "Invalid classifierValue character" 
+       static member OfChar c = match c with | '0' -> Zero | '1' -> One | '#' -> DontCare | _ -> failwith "Invalid classifierValue character" 
        member x.RandomOther flag =  
           if flag 
           then 
@@ -44,7 +44,13 @@ module Values =
              match x with 
              | Zero -> One
              | One -> Zero
-             
+          
+       override x.ToString() = 
+          match x with 
+          | DontCare -> "#"
+          | One -> "1"
+          | Zero -> "0"  
+                   
    type patternValue = One | Zero
    with 
       static member Random() = if Utility.coinToss() then Zero else One

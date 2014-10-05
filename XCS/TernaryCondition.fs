@@ -167,7 +167,7 @@ module TernaryCondition =
 
       member x.SetStringValue (str:string) = pattern <- TrinaryPattern(Array.map (fun ch -> valueOfChar ch) (str.ToCharArray()))
  
-      member x.StringValue() = Array.map (fun v -> charOfValue v) x.Pattern |> fun (chs:char []) -> new String(chs)
+      member x.StringValue() = pattern.ToString()
 
       member x.SubsumedBy (y:TernaryCondition) = 
          assert (x.Size = y.Size)
