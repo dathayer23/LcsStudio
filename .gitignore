@@ -1,0 +1,24 @@
+# git ignore file. Add the files or paths which you want to exclude while doing commit.
+*.log
+*.suo
+*.user
+*.xccheckout
+*.cache
+*.pdb
+*.force
+*.bak
+*.swp
+*.sql~
+*.InstallLog
+*.mdf
+*.mdf
+*.ldf
+*.orig
+*.opensdf
+*.ldf
+[Rr]elease/
+[Dd]ebug/
+[Oo]bj/*
+[Bb]in/
+_ReSharper*/
+*.transformed

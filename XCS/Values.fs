@@ -32,6 +32,7 @@ module Values =
          | 3 -> DontCare
        
        static member Random() = classifierValue.Random true
+       static member OfChar c = match c with | '0' -> Zero | '1' -> One | '?' -> DontCare | _ -> failwith "Invalid classifierValue character" 
        member x.RandomOther flag =  
           if flag 
           then 

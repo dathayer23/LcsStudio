@@ -581,8 +581,10 @@
 <member name="">
 
 </member>
-<member name="">
-
+<member name="T:BamaLlama.XCS.TernaryCondition.TernaryCondition">
+<summary>
+ ternary pattern with an associated action and a specific set of parameters
+</summary>
 </member>
 <member name="">
 
@@ -617,8 +619,10 @@
 <member name="">
 
 </member>
-<member name="">
-
+<member name="T:BamaLlama.XCS.TernaryCondition.TrinaryPattern">
+<summary>
+ Sequences of 0&apos;s and 1&apos;s and don&apos;t care values
+</summary>
 </member>
 <member name="">
 
@@ -637,6 +641,11 @@
 </member>
 <member name="">
 
+</member>
+<member name="T:BamaLlama.XCS.TernaryCondition.BinaryPattern">
+<summary>
+ Sequences of 0&apos;s and 1&apos;s
+</summary>
 </member>
 <member name="">
 
@@ -671,7 +680,13 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
 <member name="T:BamaLlama.XCS.Utility">
+
+</member>
+<member name="">
 
 </member>
 <member name="">

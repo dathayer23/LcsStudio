@@ -9,3 +9,4 @@ module Utility =
    let coinToss() = rnd.Next() % 2 = 0
 
    let intFromStr str = match Int32.TryParse(str) with (true,v) -> Some v | (false,_) -> None
+   let biasedCoin dbl = rnd.NextDouble() < dbl 
