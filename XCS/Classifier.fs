@@ -33,9 +33,28 @@ module Classifier =
 
       let (condition : ICondition) = cond
       let (action : IAction<int>) = act
+      let identifier = classData.NextId()
+
+      let mutable prediction = 0.0
+      let mutable error = 0.0
+      let mutable fitness = 0.0
+      let mutable actionSetSize = 0.0
+      let mutable experience = 0L
+      let mutable numerosity = 0L
+      let mutable timeStamp = 0L
+
+      member x.Id = identifier
       member x.ClassName : string = classData.ClassName
       member x.TagName = classData.TagName
-      
+
+      member x.Prediction with get() = prediction and set v = prediction <- v
+      member x.Error with get() = error and set v = error <- v
+      member x.Fitness with get() = fitness and set v = fitness <- v
+      member x.ActionSetSize with get() = actionSetSize and set v = actionSetSize <- v
+      member x.Experience with get() = experience and set v = experience <- v
+      member x.Numerosity with get() = numerosity and set v = numerosity <- v
+      member x.TimeStamp with get() = timeStamp and set v = timeStamp <- v
+
       member x.Random() =  new classifier(condition.RandomCondition None, action.RandomAction None)
       
       

@@ -9,6 +9,8 @@ open BamaLlama.XCS.TernaryCondition
 
 module Generators = 
    
+   let genBinaryValue = Gen.oneof [gen { return patternValue.Zero }; gen{ return patternValue.One}]
+   let genBinaryChar  = Gen.oneof [gen { return '0' }; gen{ return '1' }]
    let genTrinaryValue (prob:double) = 
       let dontCare = (int)(100.0 * prob)
       let otherChar = (100 - dontCare)/2
@@ -34,12 +36,19 @@ module Generators =
    let genTrinaryPatterns = fun d s -> Gen.map (fun (cs:classifierValue[]) -> new TrinaryPattern(cs)) (genTrinaryArray genTrinaryValue d s) 
 
    type MyGenerators =
+     static member patternValue() = 
+         {
+           new Arbitrary<patternValue>() with
+             override x.Generator = genBinaryValue
+             override x.Shrinker t = Seq.empty
+         }
+
      static member classifierValue() =
          {
             new Arbitrary<classifierValue>() with
              override x.Generator = (genTrinaryValue 0.2)
              override x.Shrinker t = Seq.empty
-           }
+         }
 
      static member TrinaryPattern() =
          {

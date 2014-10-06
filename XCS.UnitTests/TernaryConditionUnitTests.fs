@@ -39,3 +39,22 @@ type UnitTest() =
           Assert.AreEqual(tripat.Size, pattern2.Size)
 
        Check.VerboseThrowOnFailure RandomPatternHasSameSize
+
+    [<TestMethod>]
+    member __.``Randomized Ternary Condition has same size as original``() =
+       let RandomConditionHasSameSize (tripat:TrinaryPattern) = 
+          let cond = new TernaryCondition(tripat, Parameters())
+
+          let pattern2 = cond.Random()
+          Assert.AreEqual(cond.Size, pattern2.Size)
+
+       Check.VerboseThrowOnFailure RandomConditionHasSameSize
+
+    [<TestMethod>]
+    member __.``Covering Classifier Matches Pattern``() =
+      let CoverMatchesPattern(pattern:BinaryPattern) =
+         let cond = new TernaryCondition(pattern.Size)
+         let cover = cond.Cover pattern
+         (cover.Match pattern)
+
+      Check.VerboseThrowOnFailure CoverMatchesPattern

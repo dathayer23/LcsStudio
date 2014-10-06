@@ -54,6 +54,7 @@ module Values =
    type patternValue = One | Zero
    with 
       static member Random() = if Utility.coinToss() then Zero else One
+      override x.ToString() = match x with | One -> "1" | Zero -> "0"
 
    let matchValue (x:classifierValue) (y:patternValue) = 
       match x with 

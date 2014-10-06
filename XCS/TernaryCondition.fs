@@ -22,9 +22,16 @@ module TernaryCondition =
          member x.Size = size
          member x.Pattern = pattern
       
+      member x.Size = (x :> IPattern<patternValue>).Size
+      member x.Pattern = (x :> IPattern<patternValue>).Pattern
+
       //that can be randomized
       interface IRandomizable<BinaryPattern> with
          member x.Random() = new BinaryPattern(Array.init ((int)(x :> IPattern<_>).Size) (fun _ -> patternValue.Random()))
+      override x.ToString() = 
+         Array.fold (fun (a:StringBuilder) s -> a.Append(s.ToString())) (new StringBuilder(size)) pattern
+         |> fun sb -> sb.ToString()
+   
    /// Sequences of 0's and 1's and don't care values
    type TrinaryPattern(pat : classifierValue []) = 
       let pattern = pat
@@ -74,7 +81,8 @@ module TernaryCondition =
          (fun (x:classifierValue) -> 
             if x.isDontCare 
             then 0 else 1) x.Pattern
-
+      
+      member x.Genericness = 1.0 - (float)x.Specificness/ (float)x.Size
       member x.Match (y:IPattern<patternValue>) = 
          do assert(x.Size = y.Size)
          Array.forall2 (fun (xc:classifierValue) (yc:patternValue) -> matchValue xc yc) x.Pattern y.Pattern 
@@ -138,6 +146,7 @@ module TernaryCondition =
                      else classifierValue.Random false)
 
             (new TernaryCondition(TrinaryPattern(pat), parms))
+      member x.Random() =  (x :> IRandomizable<TernaryCondition>).Random()
 
       member this.Recombine (y:TernaryCondition) recombType =
          assert (this.Size = y.Size)
