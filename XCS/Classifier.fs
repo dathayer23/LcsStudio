@@ -1,5 +1,7 @@
 ﻿namespace BamaLlama.XCS
 
+open System
+open System.IO
 open Microsoft.FSharp.Core.Operators
 open Base
 open Interfaces
@@ -55,7 +57,12 @@ module Classifier =
       member x.Numerosity with get() = numerosity and set v = numerosity <- v
       member x.TimeStamp with get() = timeStamp and set v = timeStamp <- v
 
+      static member ReadState (sr:StreamReader) = null
+      member x.WriteState (sw:StreamWriter) = ()
+
       member x.Random() =  new classifier(condition.RandomCondition None, action.RandomAction None)
-      
+      member x.Cover (pattern:IPattern<_>) = null
+      member x.Match (pattern:IPattern<_>) = false
+      member x.Mutate mutatuinProb 
       
       
