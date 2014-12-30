@@ -24,32 +24,47 @@ module Params =
          | _ when IsInt(str) -> Int(ToInt(str))
          | _ -> Str(str)
 
-   type namedParam = string * param
+   type NamedParam = { Name: string; Param : param }
+   
+      
    
    let NamedParamFromString (str:string) = 
          let tokens = str.Split([|'='|]) |> Array.map (fun (s:string) -> s.Trim())
          if Array.length tokens = 2
-         then ((tokens.[0], param.FromString(tokens.[1])))
-         else ("Error", Error(sprintf "invalid string: [%s]" str))
+         then ({Name = tokens.[0]; Param =  param.FromString(tokens.[1])})
+         else ({Name = "Error"; Param = Error(sprintf "invalid string: [%s]" str)})
 
    type Parameters(``params``) = 
-      let mutable parameters: namedParam list = ``params``
+      let mutable parameters: NamedParam list = ``params``
       new () = Parameters([])
+      
+      member x.Empty = parameters.Length = 0
+      member x.Parameters = parameters
       member x.Exists name = 
-         match List.tryFind (fun (nm, pm) -> nm = name ) parameters with 
+         match List.tryFind (fun pm -> pm.Name = name ) parameters with 
          | Some _ -> true
          | None -> false
 
-      member x.Add name param = parameters <- (name, param) :: parameters
-      member x.Remove name = parameters <- List.filter (fun (n,_) -> n = name) parameters
+      member x.Add name param = parameters <- ({Name = name; Param = param}) :: parameters
+      member x.Remove name = parameters <- List.filter (fun p -> p.Name = name) parameters
       member x.Retrieve name = 
-         match List.tryFind (fun (nm, pm) -> nm = name ) parameters with 
-         | Some (nm,p) -> p
+         match List.tryFind (fun p -> p.Name = name ) parameters with 
+         | Some pm -> pm.Param
          | None -> raise ( ParameterException (sprintf "Parameter named %s not found"  name))
       member x.Modify nm pm = 
          do x.Remove nm
          x.Add nm pm
 
+      member x.Merge(prms:Parameters) = 
+         let addParam (p:NamedParam) = 
+            if x.Exists (p.Name) 
+            then do x.Remove (p.Name)
+            else ()
+            do x.Add (p.Name) (p.Param)
+
+         do List.map (fun p -> addParam p) prms.Parameters |> ignore
+         x
+               
       member x.Item with get nm = x.Retrieve nm and set nm pm = x.Modify nm pm
       member x.TryGetDouble nm def = if x.Exists nm then x.[nm].Double else def
       member x.TryGetInteger nm def = if x.Exists nm then x.[nm].Integer else def
@@ -62,4 +77,17 @@ module Params =
                                 |> List.map (fun (l:string) -> NamedParamFromString l)
                                 
 
-         
+      
+      type ParameterDB (``params``)  =
+         let mutable parameters : Map<string, Parameters> = ``params``
+         new () = ParameterDB(Map.empty<string, Parameters>)
+         member x.GetSubject subj = match Map.tryFind subj parameters with Some lst -> lst | None -> new Parameters()
+         member x.NewSubject subj prms = 
+            match  Map.tryFind subj parameters with 
+            | Some pms -> 
+               let newMap = Map.remove subj parameters
+               let newMap = Map.add subj (pms.Merge(prms)) newMap
+               do parameters <- newMap
+               ()
+
+            | None -> do parameters <- Map.add subj prms parameters

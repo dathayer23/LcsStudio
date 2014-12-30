@@ -51,6 +51,7 @@
     <Compile Include="TernaryCondition.fs" />
     <Compile Include="Action.fs" />
     <Compile Include="Classifier.fs" />
+    <Compile Include="ClassiferSystem.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

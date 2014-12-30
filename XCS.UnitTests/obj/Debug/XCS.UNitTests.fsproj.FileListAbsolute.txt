@@ -3,7 +3,6 @@ C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsUnitTest1.
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsUnitTest1.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsUnitTest1.pdb
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.dll
-C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.Xunit.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FSharp.Core.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\XCS.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\xunit.dll
@@ -11,8 +10,6 @@ C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\XCS.pdb
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\XCS.xml
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.pdb
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.xml
-C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.Xunit.pdb
-C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.Xunit.xml
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FSharp.Core.xml
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\xunit.xml
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\obj\Debug\XCS.UNitTests.fsprojResolveAssemblyReference.cache

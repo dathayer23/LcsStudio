@@ -54,6 +54,14 @@ module TernaryCondition =
          |> fun sb -> sb.ToString()
         
       static member FromString(str:string) = TrinaryPattern(str.ToCharArray() |> Array.map (fun c -> classifierValue.OfChar c))    
+      
+      static member Cover (pat:BinaryPattern) prob =         
+            new TrinaryPattern( 
+                  Array.map (fun tok -> 
+                           if biasedCoin prob 
+                           then classifierValueOf tok 
+                           else classifierValue.DontCare) pat.Pattern)  
+
 
    let GetMutationType i = 
       match i with 
@@ -185,4 +193,8 @@ module TernaryCondition =
       member x.IsMoreGeneralThan (y:TernaryCondition) = 
          assert (x.Size = y.Size)
          Array.forall2 (fun xv yv -> xv = DontCare || xv = yv) x.Pattern y.Pattern
+
+      static member Cover ((pattern:BinaryPattern), prob, parms) = 
+         let tpattern = TrinaryPattern.Cover pattern prob
+         new TernaryCondition(tpattern, parms)
             

@@ -131,54 +131,54 @@ This includes let-bound functions in a module.
 <member name="">
 
 </member>
-<member name="F:FsCheck.FsCheck.Config.Runner">
+<member name="P:FsCheck.Config.Runner">
 <summary>
 A custom test runner, e.g. to integrate with a test framework like xUnit or NUnit. 
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.Arbitrary">
+<member name="P:FsCheck.Config.Arbitrary">
 <summary>
 The Arbitrary instances on this class will be merged in back to front order, i.e. instances for the same generated type at the front
 of the list will override those at the back. The instances on Arb.Default are always known, and are at the back (so they can always be
 overridden)
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.EveryShrink">
+<member name="P:FsCheck.Config.EveryShrink">
 <summary>
 What to print every time a counter-example is succesfully shrunk
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.Every">
+<member name="P:FsCheck.Config.Every">
 <summary>
 What to print when new arguments args are generated in test n
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.EndSize">
+<member name="P:FsCheck.Config.EndSize">
 <summary>
 The size to use for the last test, when all the tests are passing. The size increases linearly between Start- and EndSize.
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.StartSize">
+<member name="P:FsCheck.Config.StartSize">
 <summary>
 The size to use for the first test.
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.Name">
+<member name="P:FsCheck.Config.Name">
 <summary>
 Name of the test.
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.Replay">
+<member name="P:FsCheck.Config.Replay">
 <summary>
 If set, the seed to use to start testing. Allows reproduction of previous runs.
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.MaxFail">
+<member name="P:FsCheck.Config.MaxFail">
 <summary>
 The maximum number of tests where values are rejected, e.g. as the result of ==&gt;
 </summary>
 </member>
-<member name="F:FsCheck.FsCheck.Config.MaxTest">
+<member name="P:FsCheck.Config.MaxTest">
 <summary>
 The maximum number of tests that are run.
 </summary>
@@ -331,6 +331,15 @@ Called whenever arguments are generated and after the test is run.
 <summary>
 For implementing your own test runner.
 </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -649,6 +658,9 @@ Generate a nullable value that is null 1/8 of the time.
 <member name="">
 
 </member>
+<member name="">
+
+</member>
 <member name="M:FsCheck.Arb.Default.List``1">
 <summary>
  Generate a System.Collections.Generic.List of values.
@@ -829,6 +841,12 @@ Generate a rank 1 array.
 A collection of default generators.
 </summary>
 </member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="M:FsCheck.Arb.mapFilter``1(Microsoft.FSharp.Core.FSharpFunc{``0,``0},Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},FsCheck.Arbitrary{``0})">
 <summary>
  Return an Arbitrary instance that is a mapped and filtered version of an existing arbitrary instance.
@@ -963,7 +981,9 @@ Turn a specification into a property.
 
 </member>
 <member name="T:FsCheck.Commands">
-
+<summary>
+For model-based random testing.
+</summary>
 </member>
 <member name="">
 
@@ -1011,8 +1031,10 @@ Memoize the given function using the given dictionary
 <member name="T:FsCheck.Common">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.DefaultArbitraries.Add``1">
+<summary>
+Register the generators that are static members of the type argument.
+</summary>
 </member>
 <member name="">
 
@@ -1026,13 +1048,50 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.GeneratorExtensions.Where``1(FsCheck.Gen{``0},System.Func{``0,System.Boolean})">
+<summary>
+Generates a value that satisfies a predicate. This function keeps re-trying
+by increasing the size of the original generator ad infinitum.  Make sure there is a high chance that 
+the predicate is satisfied.
+</summary>
 </member>
 <member name="M:FsCheck.Fluent.GeneratorExtensions.ToArbitrary``1(FsCheck.Gen{``0})">
 <summary>
  Construct an Arbitrary instance from a generator.
  Shrink is not supported for this type.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FsCheck.Fluent.GeneratorExtensions.Select``2(FsCheck.Gen{``0},System.Func{``0,``1})">
+<summary>
+Map the given function to the value in the generator, yielding a new generator of the result type.  
+</summary>
+</member>
+<member name="M:FsCheck.Fluent.GeneratorExtensions.Resize``1(FsCheck.Gen{``0},System.Func{System.Int32,System.Int32})">
+<summary>
+Override the current size of the test. resize n g invokes generator g with size parameter n.
+</summary>
+</member>
+<member name="M:FsCheck.Fluent.GeneratorExtensions.MakeNonEmptyList``1(FsCheck.Gen{``0})">
+<summary>
+ Generates a non-empty list of random length. The maximum length 
+ depends on the size parameter.
+</summary>
+</member>
+<member name="M:FsCheck.Fluent.GeneratorExtensions.MakeListOfLength``1(FsCheck.Gen{``0},System.Int32)">
+<summary>
+Generates a list of given length, containing values generated by the given generator.
+</summary>
+</member>
+<member name="M:FsCheck.Fluent.GeneratorExtensions.MakeList``1(FsCheck.Gen{``0})">
+<summary>
+ Generates a list of random length. The maximum length depends on the
+ size parameter.
 </summary>
 </member>
 <member name="">
@@ -1230,38 +1289,24 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.SpecBuilder`1.Or(System.Func{`0,System.Boolean},System.String)">
+<summary>
+Construct a property that fails if both fail.
+</summary>
 </member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.SpecBuilder`1.Or(System.Func{`0,System.Boolean})">
+<summary>
+Construct a property that fails if both fail.
+</summary>
 </member>
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.SpecBuilder`1.Collect(System.Func{`0,System.String})">
+<summary>
+Collect data values. The argument of collect is evaluated in each test case, 
+and the distribution of values is reported.
+</summary>
 </member>
 <member name="">
 
@@ -1272,11 +1317,15 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.SpecBuilder`1.And(System.Func{`0,System.Boolean},System.String)">
+<summary>
+Construct a property that succeeds if both succeed.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.SpecBuilder`1.And(System.Func{`0,System.Boolean})">
+<summary>
+Construct a property that succeeds if both succeed.
+</summary>
 </member>
 <member name="">
 
@@ -1284,26 +1333,38 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.UnbrowsableObject.VerboseCheck(System.String)">
+<summary>
+Check one property with the verbose configuration, and using the given name.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.UnbrowsableObject.VerboseCheck">
+<summary>
+ Check one property with the verbose configuration.
+</summary>
 </member>
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.UnbrowsableObject.QuickCheckThrowOnFailure(System.String)">
+<summary>
+ Check one property with the quick configuration, and throw an exception if it fails or is exhausted.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.UnbrowsableObject.QuickCheckThrowOnFailure">
+<summary>
+ Check one property with the quick configuration, and throw an exception if it fails or is exhausted.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.UnbrowsableObject.QuickCheck(System.String)">
+<summary>
+ Check one property with the quick configuration, and using the given name.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.UnbrowsableObject.QuickCheck">
+<summary>
+ Check one property with the quick configuration
+</summary>
 </member>
 <member name="">
 
@@ -1311,8 +1372,10 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.UnbrowsableObject.Check(FsCheck.Fluent.Configuration)">
+<summary>
+Check the given property using the given config.
+</summary>
 </member>
 <member name="">
 
@@ -1350,53 +1413,85 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.StartSize(System.Int32)">
+<summary>
+The size to use for the first test.
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.Runner(FsCheck.IRunner)">
+<summary>
+A custom test runner, e.g. to integrate with a test framework like xUnit or NUnit. 
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.Name(System.String)">
+<summary>
+Name of the test.
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.MaxNbOfTest(System.Int32)">
+<summary>
+The maximum number of tests that are run.
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.MaxNbOfFailedTests(System.Int32)">
+<summary>
+The maximum number of tests where values are rejected
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.EveryShrink(System.Func{System.Object[],System.String})">
+<summary>
+What to print every time a counter-example is succesfully shrunk
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.Every(System.Func{System.Int32,System.Object[],System.String})">
+<summary>
+What to print when new arguments args are generated in test n
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.EndSize(System.Int32)">
+<summary>
+The size to use for the last test, when all the tests are passing. The size increases linearly between Start- and EndSize.
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.StartSize">
+<summary>
+The size to use for the first test.
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.Runner">
+<summary>
+A custom test runner, e.g. to integrate with a test framework like xUnit or NUnit. 
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.Name">
+<summary>
+Name of the test.
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.MaxNbOfTest">
+<summary>
+The maximum number of tests that are run.
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.MaxNbOfFailedTests">
+<summary>
+The maximum number of tests where values are rejected
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.EveryShrink">
+<summary>
+What to print every time a counter-example is succesfully shrunk
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.Every">
+<summary>
+What to print when new arguments args are generated in test n
+</summary>
 </member>
-<member name="">
-
+<member name="P:FsCheck.Fluent.Configuration.EndSize">
+<summary>
+The size to use for the last test, when all the tests are passing. The size increases linearly between Start- and EndSize.
+</summary>
 </member>
 <member name="">
 
@@ -1407,8 +1502,10 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Shrink.Type``1">
+<summary>
+Returns the immediate shrinks for the given value based on its type.
+</summary>
 </member>
 <member name="">
 
@@ -1416,62 +1513,107 @@ based on a Arbitrary instance for the source type and two mapping functions.
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.WeighedValueIn``1(FsCheck.Fluent.WeightAndValue{``0}[])">
+<summary>
+Build a generator that generates a value from one of the constants in the given non-empty seq, with
+given probabilities. The sum of the probabilities must be larger than zero.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.WeighedValueIn``1(System.Collections.Generic.IEnumerable{FsCheck.Fluent.WeightAndValue{``0}})">
+<summary>
+Build a generator that generates a value from one of the generators in the given non-empty seq, with
+given probabilities. The sum of the probabilities must be larger than zero.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.WeighedGeneratorIn``1(FsCheck.Fluent.WeightAndValue{FsCheck.Gen{``0}}[])">
+<summary>
+Build a generator that generates a value from one of the generators in the given non-empty seq, with
+given probabilities. The sum of the probabilities must be larger than zero.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.WeighedGeneratorIn``1(System.Collections.Generic.IEnumerable{FsCheck.Fluent.WeightAndValue{FsCheck.Gen{``0}}})">
+<summary>
+Build a generator that generates a value from one of the generators in the given non-empty seq, with
+given probabilities. The sum of the probabilities must be larger than zero.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.ValueIn``1(``0[])">
+<summary>
+Build a generator that randomly generates one of the values in the given non-empty seq.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.ValueIn``1(System.Collections.Generic.IEnumerable{``0})">
+<summary>
+Build a generator that randomly generates one of the values in the given non-empty seq.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.Value``1(``0)">
+<summary>
+ Generate a constant value
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.SequenceSeq``1(System.Collections.Generic.IEnumerable{FsCheck.Gen{``0}})">
+<summary>
+Sequence the given list of generators into a generator of a list.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.SequenceOf``1(FsCheck.Gen{``0}[])">
+<summary>
+Sequence the given list of generators into a generator of a list.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.SequenceOf``1(System.Collections.Generic.IEnumerable{FsCheck.Gen{``0}})">
+<summary>
+Sequence the given list of generators into a generator of a list.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.OneOfWeighedSeqValue``1(System.Collections.Generic.IEnumerable{FsCheck.Fluent.WeightAndValue{``0}})">
+<summary>
+Build a generator that generates a value from one of the constants in the given non-empty seq, with
+given probabilities. The sum of the probabilities must be larger than zero.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.OneOfWeighedSeq``1(System.Collections.Generic.IEnumerable{FsCheck.Fluent.WeightAndValue{FsCheck.Gen{``0}}})">
+<summary>
+Build a generator that generates a value from one of the generators in the given non-empty seq, with
+given probabilities. The sum of the probabilities must be larger than zero.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.OneOfSeqValue``1(System.Collections.Generic.IEnumerable{``0})">
+<summary>
+Build a generator that randomly generates one of the values in the given non-empty seq.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.OneOfSeqGen``1(System.Collections.Generic.IEnumerable{FsCheck.Gen{``0}})">
+<summary>
+Build a generator that generates a value from one of the generators in the given non-empty seq, with
+equal probability.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.OfType``1">
+<summary>
+ Returns a generator for the type argument
+</summary>
 </member>
 <member name="">
 
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.IntBetween(System.Int32,System.Int32)">
+<summary>
+Generates an integer between l and h, inclusive.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.GeneratorIn``1(FsCheck.Gen{``0}[])">
+<summary>
+Build a generator that generates a value from one of the generators in the given non-empty seq, with
+equal probability.
+</summary>
 </member>
-<member name="">
-
+<member name="M:FsCheck.Fluent.Any.GeneratorIn``1(System.Collections.Generic.IEnumerable{FsCheck.Gen{``0}})">
+<summary>
+Build a generator that generates a value from one of the generators in the given non-empty seq, with
+equal probability.
+</summary>
 </member>
 <member name="">
 
@@ -1676,7 +1818,9 @@ Apply (&apos;map&apos;) the function f on the value in the generator, yielding a
 </summary>
 </member>
 <member name="T:FsCheck.Gen">
-
+<summary>
+Combinators to build custom random generators for any type.
+</summary>
 </member>
 <member name="">
 
@@ -1746,7 +1890,9 @@ The workflow function for generators, e.g. gen { ... }
 
 </member>
 <member name="T:FsCheck.GenBuilder">
-
+<summary>
+Computation expression builder for Gen.
+</summary>
 </member>
 <member name="M:FsCheck.GenOperators.op_LessBangGreater``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FsCheck.Gen{``0})">
 <summary>
@@ -1759,7 +1905,9 @@ The workflow function for generators, e.g. gen { ... }
 </summary>
 </member>
 <member name="T:FsCheck.GenOperators">
-
+<summary>
+Operators for Gen.
+</summary>
 </member>
 <member name="M:FsCheck.Prop.ofTestable``1(``0)">
 <summary>
@@ -1815,7 +1963,10 @@ Quantified property combinator. Provide a custom test data generator to a proper
 </summary>
 </member>
 <member name="T:FsCheck.Prop">
-
+<summary>
+Combinators to build properties, which define the property to be tested, with some
+convenience methods to investigate the generated arguments and any found counter-examples.
+</summary>
 </member>
 <member name="M:FsCheck.PropOperators.op_DotBarDot``2(``0,``1)">
 <summary>
@@ -1848,7 +1999,9 @@ Conditional property combinator. Resulting property holds if the property after 
 </summary>
 </member>
 <member name="T:FsCheck.PropOperators">
-
+<summary>
+Operators for Prop.
+</summary>
 </member>
 <member name="">
 
@@ -1917,7 +2070,9 @@ Conditional property combinator. Resulting property holds if the property after 
 
 </member>
 <member name="T:FsCheck.Random">
-
+<summary>
+Generate random numbers based on splitting seeds. Based Hugs&apos; Random implementation.
+</summary>
 </member>
 <member name="">
 
@@ -2409,7 +2564,9 @@ new array instances, overridden array instances, new catch all or overridden cat
 
 </member>
 <member name="T:FsCheck.TypeClass">
-
+<summary>
+Haskell typeclass concept simulation. For internal use.
+</summary>
 </member>
 <member name="">
 

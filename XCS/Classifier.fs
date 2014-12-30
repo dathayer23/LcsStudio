@@ -7,6 +7,7 @@ open Base
 open Interfaces
 open Action
 open ConditionBase
+open TernaryCondition
 
 module Classifier = 
    
@@ -20,23 +21,14 @@ module Classifier =
             do nextId <- nextId + 1
             ret)
    
-//   let inline randomCond opint :  ^a
-//         = (^a : (static member RandomCond : int option -> ^a) opint) 
-//
-//   let inline randomAction opint 
-//         = (^a : (static member RandomAction : int option -> ^a) opint) 
 
-   type classifier//<'Action, 'TCond, 'TAction 
-      //when 'TCond :> ICondition 
-      //and 'TAction :> IAction<'Action>>
-      (cond , act) = 
+   type classifier(cond , act) = 
 
       static let classData = new StaticClassifierData("xcs_classifier","classifier")
 
-      let (condition : ICondition) = cond
-      let (action : IAction<int>) = act
+      let (condition : TernaryCondition) = cond
+      let (action : Action) = act
       let identifier = classData.NextId()
-
       let mutable prediction = 0.0
       let mutable error = 0.0
       let mutable fitness = 0.0
@@ -45,10 +37,11 @@ module Classifier =
       let mutable numerosity = 0L
       let mutable timeStamp = 0L
 
+      
       member x.Id = identifier
       member x.ClassName : string = classData.ClassName
       member x.TagName = classData.TagName
-
+      member x.Action = action
       member x.Prediction with get() = prediction and set v = prediction <- v
       member x.Error with get() = error and set v = error <- v
       member x.Fitness with get() = fitness and set v = fitness <- v
@@ -56,13 +49,14 @@ module Classifier =
       member x.Experience with get() = experience and set v = experience <- v
       member x.Numerosity with get() = numerosity and set v = numerosity <- v
       member x.TimeStamp with get() = timeStamp and set v = timeStamp <- v
+      member x.TotalPrediction  = x.Prediction * (double)x.Numerosity
 
       static member ReadState (sr:StreamReader) = null
       member x.WriteState (sw:StreamWriter) = ()
 
-      member x.Random() =  new classifier(condition.RandomCondition None, action.RandomAction None)
-      member x.Cover (pattern:IPattern<_>) = null
+      member x.Random() =  new classifier(condition.Random(), action.Random())
+      static member Cover (pattern:BinaryPattern) action parms : classifier = new classifier(TernaryCondition.Cover(pattern, 0.2, parms), action)
       member x.Match (pattern:IPattern<_>) = false
-      member x.Mutate mutatuinProb 
+      member x.Mutate mutationProb = x
       
       

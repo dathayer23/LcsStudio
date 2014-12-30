@@ -19,19 +19,17 @@ module Action =
       //inherit ActionBase()
       static let ClassData = new ClassData("binary_action","action::binary")
       let maxAction = parms.TryGetInteger "MaxAction" 8 
-      let mutable action:int = if i > maxAction then i % maxAction else i
+      let mutable action:int =  i % maxAction
       
       new(i) =  Action(i, new Parameters())
       member x.Value with get() = action and set(v) = action <- v
+      member x.MaxAction = maxAction
 
       member x.Next : unit -> int = fun () ->
          do action <- (action + 1) % maxAction
          action
 
-      static member Random(?maxAction) = 
-         match maxAction with 
-         | Some max ->  new Action( Utility.dice(max - 1))
-         | None -> new Action( Utility.dice(8))
+      member x.Random() = new Action( Utility.dice(maxAction - 1))          
 
       static member ActionFromString (str:string)  = 
          let ints = str.Split([|':'|]) |> Array.map Utility.intFromStr
