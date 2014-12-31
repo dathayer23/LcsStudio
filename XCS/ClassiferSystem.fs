@@ -77,7 +77,7 @@ module ClassiferSystem =
    
    type CoveringStrategy = Standard | ActionBased
    type PopInitStrategy = Random | Empty | Load
-   type DiscoveryStrategy = GA | Roulette | None
+   type DiscoveryStrategy = GA | Roulette | NoDiscovery
    type DeletionStrategy = 
         RwsSetbased
       | RwsFitness
@@ -106,90 +106,115 @@ module ClassiferSystem =
       | "action based" -> CoveringStrategy.ActionBased
       | _ ->   CoveringStrategy.Standard
        
-   let SelectPopInitStrategy str = 
-      match str with 
+   let SelectPopInitStrategy (str:string) = 
+      match str.ToLower() with 
       | "random" ->  PopInitStrategy.Random
       | "empty" ->  PopInitStrategy.Empty
       | "load" -> PopInitStrategy.Load
       | _ -> PopInitStrategy.Empty
 
-   let SelectActionStrategy str = ActionSelectionStrategy.Deterministic
-   let SelectDiscoveyComponent str = DiscoveryStrategy.None
-   let SelectDeletionStrategy str = DeletionStrategy.Random
+   let SelectActionStrategy (str:string) : ActionSelectionStrategy * double option = 
+      match str.ToLower() with 
+      | "deterministic" -> (ActionSelectionStrategy.Deterministic, None)
+      | "proportional" -> (ActionSelectionStrategy.Proportional, None)
+      | "random" -> (ActionSelectionStrategy.SemiUniform, Some( 1.0))
+      | _ when str.StartsWith("semiuniform") -> 
+          let prb = dblFromStrWithDefault (str.Substring(12)) 0.5
+          if prb <= 0.0 || prb > 1.0 
+          then  failwith (sprintf "'Biased' parameter (%f) out of range (0.0,1.0]" prb)
+
+          (ActionSelectionStrategy.SemiUniform, Some( prb))
+      | _ -> failwith (sprintf "Unrecognized Exploration Policy '%s'" str)
+
+
+   let SelectDiscoveyComponent str = DiscoveryStrategy.GA
+   let SelectDeletionStrategy (str:string) = 
+      match str.ToLower() with 
+      | "standard" -> DeletionStrategy.RwsSetbased, false
+      | "accuracy-based" -> DeletionStrategy.RwsFitness, true
+      | "random-with-accuracy" -> DeletionStrategy.RandomWithAccuracy, true
+      | "random" -> DeletionStrategy.Random, false
+      | _ -> failwith (sprintf "Unrecognized Deletion Policy '%s'" str)
+       
 
    type ClassifierSystem(size, width, p:ParameterDB) =
       let parameters: Parameters = p.GetSubject("ClassifierSystem")
 
-      let classifiers : classifier array = [||]
-      let statistics  = new ClassifierStatistics()
+      let mutable classifiers : classifier array = [||]
+      let mutable statistics  = new ClassifierStatistics()
       
       let mutable matchSet = [||] 
       let mutable actionSet = [||]
 
       // experiment parameters
-      let totalSteps = parameters.TryGetInteger " " 0
-      let totalLearningSteps = parameters.TryGetInteger " " 0
-      let totalTime = parameters.TryGetInteger " " 0
-      let problemSteps = parameters.TryGetInteger " "  0
-      let totalRewaed = parameters.TryGetDouble "" 0.0
-      let systemError = parameters.TryGetDouble "" 0.0
-      let maxAction = parameters.TryGetInteger "" 8
+      let totalSteps = parameters.TryGetInteger "total experiment steps" 0
+      let totalLearningSteps = parameters.TryGetInteger "total learning steps" 0
+      let totalTime = parameters.TryGetInteger "total time" 0
+      let problemSteps = parameters.TryGetInteger "problem steps"  0
+      let totalReward = parameters.TryGetDouble "total reward" 0.0
+      let systemError = parameters.TryGetDouble "system error" 0.0
+      let maxAction = parameters.TryGetInteger "max action" 8
+
       // Population parameters
-      let maxPopulation = parameters.TryGetInteger "population size" 100
-      let populationSize = parameters.TryGetInteger " " 0
-      let macroSize = parameters.TryGetInteger " " 0
-      let populationInit : PopInitStrategy = SelectPopInitStrategy (parameters.TryGetString " " "default")
-      let populationInitFile = ""
+      let maxPopulation = parameters.TryGetInteger "max population size" 100
+      let mutable populationSize =  0
+      let mutable macroSize =  0
+      let populationInit : PopInitStrategy = 
+         SelectPopInitStrategy (parameters.TryGetString "population init" "default")
+      let populationInitFile = parameters.TryGetString "population init file" "classifiers.txt"
 
       // Classifier parameters 
-      let initPrediction = parameters.TryGetDouble "" 0.0
-      let initError = parameters.TryGetDouble "" 0.0
-      let initFitness = parameters.TryGetDouble "" 0.0
-      let initSetSize = parameters.TryGetDouble "" 0.0
-      let initNumUpdates = parameters.TryGetInteger " " 0
+      let initPrediction = parameters.TryGetDouble "prediction init" 0.0
+      let initError = parameters.TryGetDouble "error init" 0.0
+      let initFitness = parameters.TryGetDouble "fitness init" 0.0
+      let initSetSize = parameters.TryGetDouble "set size init" 0.0
+      let initNumUpdates = parameters.TryGetInteger "number updates init" 0
+      let classifierWidth = parameters.TryGetInteger "classifier width" 24
 
       //covering strategy parameters
       let coveringStrategy = SelectCoverStrategy (parameters.TryGetString "covering strategy" "standard")
       let tethaNma = parameters.TryGetDouble "covering threshold" 0.0
-      let fractionForCovering = parameters.TryGetDouble "" 0.0
+      let fractionForCovering = parameters.TryGetDouble "fraction for covering" 0.0
 
       //action selection parameters
-      let actionSelectionStrategy : ActionSelectionStrategy = SelectActionStrategy (parameters.TryGetString " " "default")
-
-      let propRandomAction = parameters.TryGetDouble "" 0.0
-
+      let actionSelectionStrategy, prbRnd = SelectActionStrategy (parameters.TryGetString " " "default")
+      let explorationStrategy = parameters.TryGetString "exploration strategy" "greedy"
+      let probRandomAction = parameters.TryGetDouble "prob random action" (match prbRnd with | Some f -> f | None -> 0.0)
+                                                                           
       //fitness computation parameters
-      let epsilonZero = parameters.TryGetDouble ""  0.0
-      let alpha = parameters.TryGetDouble "" 0.0
-      let vi = parameters.TryGetDouble "" 0.0
-      let useExponentialFitness = parameters.TryGetBool " " false
+      let epsilonZero = parameters.TryGetDouble "epsilon zero"  0.0
+      let alpha = parameters.TryGetDouble "alpha" 0.0
+      let vi = parameters.TryGetDouble "vi" 0.0
+      let useExponentialFitness = parameters.TryGetBool "use exponential fitness" false
 
       // ga parameters
       let discoveryComponent = SelectDiscoveyComponent(parameters.TryGetString "discovery component" "default")
       let flagDiscoveryComponent = parameters.TryGetBool " " true;
-      let thetaGA = parameters.TryGetDouble "" 0.0
-      let propCrossover = parameters.TryGetDouble "" 0.0
-      let probMutation = parameters.TryGetDouble "" 0.0
+      let thetaGA = parameters.TryGetDouble "theta GA" 0.0
+      let propCrossover = parameters.TryGetDouble "crossover probability" 0.0
+      let probMutation = parameters.TryGetDouble "mutation probability" 0.0
       let flagGaAvgInit = parameters.TryGetBool " " false
-      let flagErrorUpdateFirst = parameters.TryGetBool " " false
-      let flagUpdateTest = parameters.TryGetBool " " false
-      let useGa = parameters.TryGetBool " " true
-      let useCrossover = parameters.TryGetBool " " true
-      let useMutation = parameters.TryGetBool " " true
+      let flagErrorUpdateFirst = parameters.TryGetBool "update error first" false
+      let flagUpdateTest = parameters.TryGetBool "update during test" false
+      let useGa = parameters.TryGetBool "use GA" true
+      let useCrossover = parameters.TryGetBool "use crossover" true
+      let useMutation = parameters.TryGetBool "use mutation" true
 
       //subsumption deletion parameters
-      let flagGaSubsumption = parameters.TryGetBool " " true
-      let flagGaaSubsumption = parameters.TryGetBool " " false
-      let flagAsSubsumption = parameters.TryGetBool " " true
-      let thetaSub = parameters.TryGetDouble "" 0.0
-      let thetaAsSub = parameters.TryGetDouble "" 0.0
+      let flagGaSubsumption = parameters.TryGetBool "GA Subsumption" true
+      let flagGaaSubsumption = parameters.TryGetBool "GAA Subsumption" false
+      let flagAsSubsumption = parameters.TryGetBool "AS Subsimption" true
+      let thetaGaSub = parameters.TryGetDouble "theta GA sub" 0.0
+      let thetaAsSub = parameters.TryGetDouble "theta As sub" 0.0
       let flagCoverAvgInit = parameters.TryGetBool " " true
 
       //delete parameters
-      let deletionStrategy : DeletionStrategy = SelectDeletionStrategy (parameters.TryGetString " " "default")
-      let flagDeleteWithAccuracy = parameters.TryGetBool " " false
-      let thetaDel = parameters.TryGetDouble "" 0.0
-      let deltaDel = parameters.TryGetDouble "" 0.0
+      let deletionStrategy, flagDeleteWithAccuracy = 
+         SelectDeletionStrategy (parameters.TryGetString "deletion strategy" "default")
+      // allow parameters to override default setting
+      let flagDeleteWithAccuracy = parameters.TryGetBool "delete with accuracy" false
+      let thetaDel = parameters.TryGetDouble "theta delete" 0.0
+      let deltaDel = parameters.TryGetDouble "delta delete" 0.0
 
       // reinforcement parameters
       let learningRate = parameters.TryGetDouble "learning rate" 0.8
@@ -204,6 +229,28 @@ module ClassiferSystem =
 
       let initClassifier (cl:classifier) = cl
       let insertClassifier cl = ()
+
+      let initRandomPopulation() = 
+         do [1 .. maxPopulation ]
+                |> List.map (
+                     fun _ -> new classifier(width, maxAction)
+                                  |> initClassifier 
+                                  |> insertClassifier) |> ignore
+         do macroSize <- classifiers.Length
+         do populationSize <- maxPopulation   
+         ()
+
+      let initPopulationLoad fileName = [||]
+         
+      let initClassifierSet() = 
+         match populationInit with 
+         | PopInitStrategy.Empty  -> classifiers <- [||]
+         | PopInitStrategy.Random -> initRandomPopulation()
+         | PopInitStrategy.Load   -> classifiers <- initPopulationLoad populationInitFile
+
+
+      
+      
       let deleteClassifier() = ()
 
       let performStandardCovering matchSet pattern =  

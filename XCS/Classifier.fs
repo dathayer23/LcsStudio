@@ -37,6 +37,7 @@ module Classifier =
       let mutable numerosity = 0L
       let mutable timeStamp = 0L
 
+      new (size, maxAction) = classifier(new TernaryCondition(size), new Action(dice maxAction))
       
       member x.Id = identifier
       member x.ClassName : string = classData.ClassName
