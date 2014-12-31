@@ -18,15 +18,16 @@ module Params =
       member x.String = match x with Str v -> v | _ -> raise (ParameterException "Parameter is not a string type")
       static member FromString (str:string) = 
          match str.ToLower() with
+         | "on"
          | "true" -> Bl(true)
+         | "off"
          | "false" -> Bl(false)
-         | _ when IsDouble(str) -> Dbl(ToDouble(str))
+
+         | _ when str.Contains(".") && IsDouble(str) -> Dbl(ToDouble(str))
          | _ when IsInt(str) -> Int(ToInt(str))
          | _ -> Str(str)
 
    type NamedParam = { Name: string; Param : param }
-   
-      
    
    let NamedParamFromString (str:string) = 
          let tokens = str.Split([|'='|]) |> Array.map (fun (s:string) -> s.Trim())
@@ -79,6 +80,7 @@ module Params =
 
       
       type ParameterDB (``params``)  =
+         
          let mutable parameters : Map<string, Parameters> = ``params``
          new () = ParameterDB(Map.empty<string, Parameters>)
          member x.GetSubject subj = match Map.tryFind subj parameters with Some lst -> lst | None -> new Parameters()
@@ -91,3 +93,44 @@ module Params =
                ()
 
             | None -> do parameters <- Map.add subj prms parameters
+
+         member x.AddParam subj param = x.NewSubject subj (new Parameters([param]))
+            
+      
+      let ReadParams (file:FileStream) =
+         use strm = new StreamReader(file)
+         let s = strm.ReadToEnd() 
+         let lines = s.Split([|'\n'|], StringSplitOptions.RemoveEmptyEntries) 
+         let l2 = 
+            lines
+               |> Array.filter (fun (s:string) -> not (s.StartsWith("##")))
+               |> List.ofArray
+
+         let paramDb = new ParameterDB()
+
+         let processLines lines = 
+            let processLine subj (str:string) = 
+               if str.StartsWith("<") || str.StartsWith("[")
+               then 
+                  let newSubj = str.Trim([| '<'; '>'; '['; ']'; '/'; ' '; '\r'; '\n'; '\t'|])
+                  if newSubj = subj
+                  then ("", None)
+                  else (newSubj, None)
+               else
+                  let pm = str.Trim([| '<'; '>'; '['; ']'; '/'; ' '; '\r'; '\n'; '\t'|])
+                  if String.IsNullOrEmpty(pm)
+                  then (subj, None)
+                  else (subj, Some(NamedParamFromString pm))
+
+            let rec Process subj lines = 
+               match lines with 
+               | [] -> paramDb
+               | l :: ll -> 
+                  match processLine subj l with 
+                  | subj, None -> Process subj ll
+                  | subj, Some prm -> 
+                      do paramDb.AddParam subj prm
+                      Process subj ll
+                                         
+            Process "" lines
+         processLines l2

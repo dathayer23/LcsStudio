@@ -10,7 +10,7 @@ open BamaLlama.XCS.Values
 open Generators
 
 [<TestClass>]
-type UnitTest() = 
+type UnitTestTernaryCondition() = 
 
     [<TestMethod>]
     member __.``Set String Value Returns Same String from TernaryCondition`` () = 

@@ -69,6 +69,7 @@
     <None Include="MSTest.runsettings" />
     <Compile Include="Generators.fs" />
     <Compile Include="TernaryConditionUnitTests.fs" />
+    <Compile Include="ParametersUnittests.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

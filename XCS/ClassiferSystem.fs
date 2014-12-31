@@ -12,7 +12,7 @@ open ConditionBase
 open TernaryCondition
 open Classifier
 
-module ClassiferSystem = 
+module ClassifierSystem = 
    type SystemPrediction = 
       {
          payoff : double;
@@ -280,3 +280,5 @@ module ClassiferSystem =
       member x.ActionSet(a:Action) = 
          do actionSet <- Array.filter (fun (cl:classifier) -> cl.Action = a) matchSet
          actionSet
+
+      member x.BeginExperiment() = ()
