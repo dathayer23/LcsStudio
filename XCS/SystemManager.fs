@@ -8,6 +8,7 @@ open Base
 open Utility
 open Params
 open ClassifierSystem
+open Environment
 open ExperimentStats
 
 module SystemManager = 
@@ -18,7 +19,7 @@ module SystemManager =
       let numExperiments = expParams.TryGetInteger "number of experiments" 0
       let firstLearningProblem = expParams.TryGetInteger "first problem" 0
       let numLearningProblems = expParams.TryGetInteger "number of learning problems" 0
-      let numCondenstionProblems = expParams.TryGetInteger "number of condensation problems" 0
+      let numCondensationProblems = expParams.TryGetInteger "number of condensation problems" 0
       let numTestProblems = expParams.TryGetInteger "number of test problems" 0
       let maxSteps = expParams.TryGetInteger "maximum steps" 100
       let doTrace = expParams.TryGetBool "do trace" true
@@ -59,8 +60,27 @@ module SystemManager =
          let traceFileName currentExperiment = 
             sprintf "trace.%s-%d" fileExtension currentExperiment
 
-         
+         let explorationFlag = false
+         let condensationFlag = false
          let openFiles currExperiment = ()
+         let ExecuteProblemStep() = 
+            do classifierSystem.Step(explorationFlag, condensationFlag)
+            do expStats :=  (!expStats).IncProblemSteps()
+         let ExecuteProblemSteps() = ()
+
+         let performProblem currProblem = 
+            let fileStats() = ()
+
+            do fileStats()
+            do classifierSystem.BeginProblem()
+            let condensationFlag = 
+               numCondensationProblems > 0 &&
+               (currProblem >= firstLearningProblem + 2 * numLearningProblems)
+            do environment.BeginProblem(explorationFlag)
+            do expStats :=  (!expStats).StartProblem()
+            do ExecuteProblemSteps()
+            do expStats :=  (!expStats).EndProblem()
+
 
          let performProblems() = ()
 

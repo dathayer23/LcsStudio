@@ -282,3 +282,5 @@ module ClassifierSystem =
          actionSet
 
       member x.BeginExperiment() = ()
+      member x.BeginProblem() = ()
+      member x.Step (explore, condense) = ()
