@@ -12,7 +12,11 @@ open Environment
 open ExperimentStats
 
 module SystemManager = 
-   
+   let CreateEnvironment str pms = 
+      match str with
+      | "6-multiplexer" -> new Multiplexer(pms)
+      | _ -> failwith (sprintf "Unknown Environemtne specified '%s'" str)
+
    type LcsManager(``params``: ParameterDB) =      
       let expParams = ``params``.GetSubject("experiments")
       let firstExperiment = expParams.TryGetInteger "first experiment" 0
@@ -38,12 +42,13 @@ module SystemManager =
       let compactAvgRewardSum = expParams.TryGetDouble "compact average reward sum" 0.0
       let compactAvgSize = expParams.TryGetInteger "compact average size" 0
       let bufferedOutput = expParams.TryGetBool "buffered output" true
-
+      let environment = CreateEnvironment (expParams.TryGetString "environment" "parity") ``params``
+     
       do if compactMode then trace <- false
       let mutable currentExperiment = -1
       let mutable currentPropblem = -1
       let mutable currentNumTestProblems = 0
-      let mutable classifierSystem : ClassifierSystem = new ClassifierSystem(0,0,``params``)
+      let mutable classifierSystem : ClassifierSystem = new ClassifierSystem(0,0)
       let saveAgentReport expNo problemNo = ()
       let saveAgentState  expNo problemNo = ()
       let restoreAgent expNo = ()

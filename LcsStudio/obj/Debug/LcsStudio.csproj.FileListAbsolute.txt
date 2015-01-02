@@ -12,6 +12,3 @@ C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.Resour
 C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.csproj.GenerateResource.Cache
 C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.exe
 C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.pdb
-C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\FsCheck.dll
-C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\FsCheck.pdb
-C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\FsCheck.xml

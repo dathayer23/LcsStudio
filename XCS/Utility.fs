@@ -13,3 +13,18 @@ module Utility =
    let dblFromStrWithDefault str v = match dblFromStr str with Some x -> x | None -> v
    let intFromStrWithDefault str v = match intFromStr str with Some x -> x | None -> v
    let biasedCoin dbl = rnd.NextDouble() < dbl 
+   let long2binary decimal size = 
+      let _base = 1 <<< size
+      let rec _long2binary str bit bse = 
+          if bit < size 
+          then  
+            let b = bse >>> 1
+            _long2binary (str + (if (decimal &&& b) > 0 then "1" else "0")) (bit + 1) b
+          else 
+             str
+
+      _long2binary "" 0 _base
+
+
+
+              

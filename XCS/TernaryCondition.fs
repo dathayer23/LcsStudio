@@ -18,11 +18,19 @@ module TernaryCondition =
       let pattern = pat
       let size = (Array.length pat)
 
+      new(size) = new BinaryPattern(Array.init size (fun _ -> patternValue.Random()))
+      new (str:string) = 
+         new BinaryPattern(
+            str.ToCharArray() 
+            |> Array.map (fun c -> patternValue.OfChar c))
+
+
       //binaryPattern is a Pattern
       interface IPattern<patternValue> with 
          member x.Size = size
          member x.Pattern = pattern
-      
+      member x.Item with get(index) = pattern.[index]
+
       member x.Size = (x :> IPattern<patternValue>).Size
       member x.Pattern = (x :> IPattern<patternValue>).Pattern
 
@@ -72,6 +80,13 @@ module TernaryCondition =
       | 3 -> mutationType.ThreeValue
       | _ -> failwith "Invalid Mutation Type"
    
+   let GetRecombinationType i = 
+      match i with 
+      | 1 -> recombinationType.Uniform
+      | 2 -> recombinationType.OnePoint
+      | 3 -> recombinationType.TwoPoint
+      | _ -> failwith "Invalid recombination type"
+
    //----------------------------------------------------------------------------------------------------------------------------
    /// ternary pattern with an associated action and a specific set of classData.parameters
    type TernaryCondition(pat:TrinaryPattern) =
@@ -79,7 +94,7 @@ module TernaryCondition =
       static let SetParameters (pms: ParameterDB) =  classData.SetParameters(pms)
 
       let mutable dontCareProb : double = classData.parameters.TryGetDouble "DontCareProb" 0.25
-      let mutable crossoverType : int = classData.parameters.TryGetInteger "CrossoverType" 1
+      let mutable crossoverType : recombinationType  = GetRecombinationType (classData.parameters.TryGetInteger "CrossoverType" 1)
       let mutable mutationType : mutationType = GetMutationType(classData.parameters.TryGetInteger "MutationType" 1)
       let mutable flagMutationWithDontCare = classData.parameters.TryGetBool "FlagMutationWithDontCare" true
       let mutable pattern = pat
@@ -161,7 +176,7 @@ module TernaryCondition =
             (new TernaryCondition(TrinaryPattern(pat)))
       member x.Random() =  (x :> IRandomizable<TernaryCondition>).Random()
 
-      member this.Recombine (y:TernaryCondition) recombType =
+      member this.Recombine (y:TernaryCondition) =
          assert (this.Size = y.Size)
          let uniformCrossover (x:TernaryCondition) (y:TernaryCondition) = 
             Array.map2 
@@ -180,7 +195,7 @@ module TernaryCondition =
             Array.mapi2 (fun i xv yv -> if i > pp1 && i < pp2 then yv else xv) x.Pattern y.Pattern
             
          let pat = 
-            match recombType with 
+            match crossoverType with 
             | Uniform ->  uniformCrossover this y
             | OnePoint -> singlePointCrossover this y
             | TwoPoint -> twoPointCrossover this y
@@ -199,7 +214,7 @@ module TernaryCondition =
          assert (x.Size = y.Size)
          Array.forall2 (fun xv yv -> xv = DontCare || xv = yv) x.Pattern y.Pattern
 
-      static member Cover ((pattern:BinaryPattern), prob, parms) = 
+      static member Cover ((pattern:BinaryPattern), prob) = 
          let tpattern = TrinaryPattern.Cover pattern prob
          new TernaryCondition(tpattern)
             

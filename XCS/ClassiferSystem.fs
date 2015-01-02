@@ -137,8 +137,10 @@ module ClassifierSystem =
       | _ -> failwith (sprintf "Unrecognized Deletion Policy '%s'" str)
        
 
-   type ClassifierSystem(size, width, p:ParameterDB) =
-      let parameters: Parameters = p.GetSubject("ClassifierSystem")
+   type ClassifierSystem(size:int, width:int) =
+      static let classData = ClassData.NewClassData "xcs_classifier_system" "classifier_system"
+
+      let parameters: Parameters = classData.parameters
 
       let mutable classifiers : classifier array = [||]
       let mutable statistics  = new ClassifierStatistics()
@@ -256,7 +258,7 @@ module ClassifierSystem =
       let performStandardCovering matchSet pattern =  
          if createCover(matchSet)
          then
-            let newClassifier = classifier.Cover pattern  (new Action(dice maxAction)) parameters
+            let newClassifier = classifier.Cover( pattern )
             let newClassifier = initClassifier newClassifier
             do insertClassifier newClassifier
             do deleteClassifier()
@@ -270,7 +272,7 @@ module ClassifierSystem =
          match coveringStrategy with
          | CoveringStrategy.Standard -> performStandardCovering matchSet pattern
          | CoveringStrategy.ActionBased -> performNmaCovering matchSet pattern
-         | _ -> performStandardCovering matchSet pattern
+         
          
       
       member x.MatchSet(pattern : BinaryPattern) = 

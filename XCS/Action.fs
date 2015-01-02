@@ -18,7 +18,8 @@ module Action =
    type Action(i) = 
       //inherit ActionBase()
       static let classData = ClassData.NewClassData "binary_action" "action::binary"
-      let maxAction = classData.parameters.TryGetInteger "MaxAction" 8 
+      static let maxAction = classData.parameters.TryGetInteger "MaxAction" 8 
+      
       let mutable action:int =  i % maxAction      
       
       new (str:string) = 
@@ -32,7 +33,11 @@ module Action =
          do action <- (action + 1) % maxAction
          action
 
-      member x.Random() = new Action( Utility.dice(maxAction - 1))          
+      static member Random() = new Action( Utility.dice(maxAction - 1))     
+           
+      member x.Mutate (probMutate:double) = 
+         if Utility.biasedCoin probMutate
+         then action <- Utility.dice maxAction
 
       static member ActionFromString (str:string)  = 
          let ints = str.Split([|':'|]) |> Array.map Utility.intFromStr

@@ -13,9 +13,12 @@ open TernaryCondition
 module Classifier = 
    
    type StaticClassifierData(clss:string, tag:string) =
-      inherit ClassData(clss, tag)
+      static let mutable  classData =  ClassData.NewClassData "" ""
       let mutable nextId = 0
-      
+      member x.TagName = classData.TagName
+      member x.ClassName = classData.ClassName
+      member x.SetParameters pms = classData.SetParameters pms
+      member x.Parameters = classData.parameters
       member x.NextId() = 
          lock x (fun () -> 
             let ret = nextId
@@ -23,17 +26,21 @@ module Classifier =
             ret)
    
 
-   type classifier(cond , act) = 
+   type classifier(cond : TernaryCondition , act:Action) = 
       static let classData = new StaticClassifierData("xcs_classifier","classifier")
-      static let mutable parameters : Parameters = new Parameters([])
-      static let SetParameters (pms: ParameterDB) =  do parameters <- pms.GetSubject(classData.TagName)
+      static let SetParameters (pms: ParameterDB) =  classData.SetParameters pms
 
-      //let parms = ``params``.GetSubject(classData.ClassName)
-      let mutable (condition : TernaryCondition) = cond
-      let mutable (action : Action) = act
+      static let parms = classData.Parameters
+      //static let mutable recombinationType = recombinationType.Uniform 
+      static let Init( prms : ParameterDB) = 
+         do classData.SetParameters prms
+         //do recombinationType <- parms.TryGetInteger "recombination type" 1
+         ()
+
       let identifier = classData.NextId()
 
-
+      let mutable (condition : TernaryCondition) = cond
+      let mutable (action : Action) = act
       let mutable prediction = 0.0
       let mutable error = 0.0
       let mutable fitness = 0.0
@@ -43,13 +50,12 @@ module Classifier =
       let mutable timeStamp = 0L
       
       /// Constructors
-      new (size:int, maxAction, pms) = new classifier(new TernaryCondition(size), new Action(dice maxAction))
-      
+      new (size:int, maxAction) = new classifier(new TernaryCondition(size), new Action(dice maxAction))
+
       /// properties
       member x.Id = identifier
       member x.ClassName : string = classData.ClassName
       member x.TagName = classData.TagName
-      member x.Action = action
       member x.Prediction with get() = prediction and set v = prediction <- v
       member x.Error with get() = error and set v = error <- v
       member x.Fitness with get() = fitness and set v = fitness <- v
@@ -64,16 +70,16 @@ module Classifier =
       static member ReadState (sr:StreamReader) = null
       member x.WriteState (sw:StreamWriter) = ()
 
-      member x.Random() =  new classifier(condition.Random(), action.Random())
+      member x.Random() =  new classifier(condition.Random(), Action.Random())
       member x.Match (pattern:IPattern<_>) = condition.Match(pattern)
       
-      member x.Cover (pattern:BinaryPattern) : classifier = 
-         new classifier(TernaryCondition.Cover(pattern, 0.2), x.Action.Random())
+      static member Cover (pattern:BinaryPattern) : classifier = 
+         new classifier(TernaryCondition.Cover(pattern, 0.2), Action.Random())
       
 
       member x.Mutate mutationProb inputs = 
-         do condition <- condition.Mutate(inputs, mutationProb)
-         do action <- action.Mutate(mutationProb)
+         do condition <- condition.Mutate ((inputs, mutationProb))
+         do action.Mutate(mutationProb)
          ()
 
       member x.Recombine( classifier:classifier ) = 
