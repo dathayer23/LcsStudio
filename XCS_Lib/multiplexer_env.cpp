@@ -199,8 +199,8 @@ multiplexer_env::perform(const t_action& action)
 #endif
 }
 /*
-      reward= 300.+(double)(((place-NRBITS)*200)+100*(int)(state[place]-'0'));
-      reward= 0.+(double)(((place-NRBITS)*200)+100*(int)(state[place]-'0'));
+	  reward= 300.+(double)(((place-NRBITS)*200)+100*(int)(state[place]-'0'));
+	  reward= 0.+(double)(((place-NRBITS)*200)+100*(int)(state[place]-'0'));
  *
  */
 

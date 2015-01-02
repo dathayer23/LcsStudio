@@ -2,7 +2,6 @@ C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsUnitTest1.
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsUnitTest1.XML
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsUnitTest1.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsUnitTest1.pdb
-C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FSharp.Core.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\XCS.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\xunit.dll

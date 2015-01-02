@@ -17,11 +17,19 @@ module TernaryCondition =
       let pattern = pat
       let size = (Array.length pat)
 
+      new(size) = new BinaryPattern(Array.init size (fun _ -> patternValue.Random()))
+      new (str:string) = 
+         new BinaryPattern(
+            str.ToCharArray() 
+            |> Array.map (fun c -> patternValue.OfChar c))
+
+
       //binaryPattern is a Pattern
       interface IPattern<patternValue> with 
          member x.Size = size
          member x.Pattern = pattern
-      
+      member x.Item with get(index) = pattern.[index]
+
       member x.Size = (x :> IPattern<patternValue>).Size
       member x.Pattern = (x :> IPattern<patternValue>).Pattern
 
