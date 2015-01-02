@@ -44,8 +44,8 @@
   <ItemGroup>
     <Compile Include="Utility.fs" />
     <Compile Include="Interfaces.fs" />
-    <Compile Include="Base.fs" />
     <Compile Include="Params.fs" />
+    <Compile Include="Base.fs" />
     <Compile Include="Values.fs" />
     <Compile Include="ConditionBase.fs" />
     <Compile Include="TernaryCondition.fs" />

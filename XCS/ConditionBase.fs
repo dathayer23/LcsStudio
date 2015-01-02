@@ -18,13 +18,14 @@ module ConditionBase =
       abstract member Pattern : patternValue array
       default x.Pattern = pattern
 
-         
+   
+   [<AbstractClass>]      
    type public  CondBase() = 
-      static let classData = new ClassData("CondBase","condition:base")
-      static member Version = ""
+      static let mutable classData = ClassData.NewClassData "CondBase" "condition:base"     
      
       member x.ClassName = classData.ClassName
       member x.TagName = classData.TagName
+      member x.ClassData with get() = classData and set(v) = classData <- v
 
       abstract member Size : int
       default x.Size = 0
@@ -45,10 +46,10 @@ module ConditionBase =
       default x.Specificity = (double)x.Specificness / (double)x.Size      
       
       abstract member SetStringValue : string -> unit
-      default x.SetStringValue _ = ()
+      default x.SetStringValue s = ()
 
       abstract member Match : BasePattern -> bool
-      default x.Match _ = false
+      default x.Match p = false
 
       abstract member SubsumedBy : CondBase -> bool
       default x.SubsumedBy(v) = false

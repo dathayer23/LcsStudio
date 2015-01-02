@@ -15,13 +15,16 @@ module Action =
 
       //abstract member ActionFromString : string -> ActionBase
 
-   type Action(i, parms:Parameters) = 
+   type Action(i) = 
       //inherit ActionBase()
-      static let ClassData = new ClassData("binary_action","action::binary")
-      let maxAction = parms.TryGetInteger "MaxAction" 8 
-      let mutable action:int =  i % maxAction
+      static let classData = ClassData.NewClassData "binary_action" "action::binary"
+      let maxAction = classData.parameters.TryGetInteger "MaxAction" 8 
+      let mutable action:int =  i % maxAction      
       
-      new(i) =  Action(i, new Parameters())
+      new (str:string) = 
+         let flds = str.Split([|':'|])
+         new Action(Utility.intFromStrWithDefault flds.[0] 1)
+
       member x.Value with get() = action and set(v) = action <- v
       member x.MaxAction = maxAction
 
@@ -37,7 +40,7 @@ module Action =
          | [|Some v1; Some v2|] ->
             let parms = new Parameters()
             do parms.Add "MaxAction" (Int v2)
-            (new Action(v1, parms))
+            (new Action(v1))
 
          | [|Some v1; None|] -> (new Action(v1))
          | [|None; Some v2|] -> (new Action(v2))
