@@ -87,7 +87,12 @@ module SystemManager =
             do expStats :=  (!expStats).EndProblem()
 
 
-         let performProblems() = ()
+         let performProblems() = 
+            let lastProblem = 
+               firstLearningProblem + 2 * 
+                        (numLearningProblems + numCondensationProblems) + numTestProblems
+
+            [firstLearningProblem .. lastProblem] |> List.iter (fun i -> performProblem i)
 
          let performExperiment currExperiment = 
             do openFiles currExperiment

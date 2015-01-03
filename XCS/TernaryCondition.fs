@@ -90,7 +90,7 @@ module TernaryCondition =
    //----------------------------------------------------------------------------------------------------------------------------
    /// ternary pattern with an associated action and a specific set of classData.parameters
    type TernaryCondition(pat:TrinaryPattern) =
-      static let classData = ClassData.NewClassData "TernaryCondition" "condition:Ternary"
+      static let classData = ClassData.NewClassData "TernaryCondition" "condition::Ternary"
       static let SetParameters (pms: ParameterDB) =  classData.SetParameters(pms)
 
       let mutable dontCareProb : double = classData.parameters.TryGetDouble "DontCareProb" 0.25

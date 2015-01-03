@@ -16,7 +16,7 @@ type UnitTestTernaryCondition() =
     member __.``Set String Value Returns Same String from TernaryCondition`` () = 
       let ClassifierValuesReturnIdenticalStringFromTernaryCondition(pat:classifierValue[]) =
          let str = System.String(Array.map(fun v -> charOfValue v) pat)
-         let testVal = new TernaryCondition(TrinaryPattern(pat), Parameters())
+         let testVal = new TernaryCondition(TrinaryPattern(pat))
          let testString = testVal.StringValue()
          Assert.AreEqual(str, testString)
       Check.VerboseThrowOnFailure ClassifierValuesReturnIdenticalStringFromTernaryCondition
@@ -26,7 +26,7 @@ type UnitTestTernaryCondition() =
        let StringRoundtrip (tripat:TrinaryPattern) = 
           do Debug.WriteLine(tripat.ToString())
           let pattern = tripat.ToString()
-          let cond = new TernaryCondition(pattern, Parameters())
+          let cond = new TernaryCondition(pattern)
           let pattern2 = cond.StringValue()
           Assert.AreEqual(pattern2, pattern)
 
@@ -43,7 +43,7 @@ type UnitTestTernaryCondition() =
     [<TestMethod>]
     member __.``Randomized Ternary Condition has same size as original``() =
        let RandomConditionHasSameSize (tripat:TrinaryPattern) = 
-          let cond = new TernaryCondition(tripat, Parameters())
+          let cond = new TernaryCondition(tripat)
 
           let pattern2 = cond.Random()
           Assert.AreEqual(cond.Size, pattern2.Size)
