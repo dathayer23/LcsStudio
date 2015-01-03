@@ -16,6 +16,6 @@ type UnitTest() =
    member __.``Read parameter file into parameater  database``() =
       use file = File.Open(@"C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS_Lib\examples\woods2\confsys.woods2", FileMode.Open)
       
-      let parameterDb = BamaLlama.XCS.Params.ReadParams(file)
+      //let parameterDb = BamaLlama.XCS.Params.ReadParams(file)
       
       Assert.IsTrue(true)
