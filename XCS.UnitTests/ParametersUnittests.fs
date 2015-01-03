@@ -5,7 +5,7 @@ open System.Diagnostics
 open System.IO
 open Microsoft.VisualStudio.TestTools.UnitTesting
 open FsCheck
-//open BamaLlama.XCS.Params
+open BamaLlama.XCS.Params
 
 
 

@@ -1,8 +1,7 @@
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\XCS.XML
-C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\XCS.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\XCS.pdb
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\FSharp.Core.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\FSharp.Core.xml
-C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.pdb
-C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.fsprojResolveAssemblyReference.cache
+C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\bin\Debug\XCS.exe
+C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.exe

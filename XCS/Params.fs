@@ -2,6 +2,7 @@
 
 open System
 open System.IO
+open Microsoft.FSharp.Core
 
 module Params = 
    exception ParameterException of string
@@ -78,23 +79,22 @@ module Params =
                                 |> List.map (fun (l:string) -> NamedParamFromString l)
                                 
 
-      
-      type ParameterDB (``params``)  =
-         
-         let mutable parameters : Map<string, Parameters> = ``params``
-         new () = ParameterDB(Map.empty<string, Parameters>)
-         member x.GetSubject subj = match Map.tryFind subj parameters with Some lst -> lst | None -> new Parameters()
-         member x.NewSubject subj prms = 
-            match  Map.tryFind subj parameters with 
-            | Some pms -> 
-               let newMap = Map.remove subj parameters
-               let newMap = Map.add subj (pms.Merge(prms)) newMap
-               do parameters <- newMap
-               ()
+   [<AllowNullLiteral>]
+   type ParameterDB (``params``)  =         
+      let mutable parameters : Map<string, Parameters> = ``params``
+      new () = ParameterDB(Map.empty<string, Parameters>)
+      member x.GetSubject subj = match Map.tryFind subj parameters with Some lst -> lst | None -> new Parameters()
+      member x.NewSubject subj prms = 
+         match  Map.tryFind subj parameters with 
+         | Some pms -> 
+            let newMap = Map.remove subj parameters
+            let newMap = Map.add subj (pms.Merge(prms)) newMap
+            do parameters <- newMap
+            ()
 
-            | None -> do parameters <- Map.add subj prms parameters
+         | None -> do parameters <- Map.add subj prms parameters
 
-         member x.AddParam subj param = x.NewSubject subj (new Parameters([param]))
+      member x.AddParam subj param = x.NewSubject subj (new Parameters([param]))
             
       
    let ReadParams (file:FileStream) =
