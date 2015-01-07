@@ -4,11 +4,12 @@ open System
 open System.Diagnostics
 open System.IO
 open Params
+open SystemManager
 
 module Program = 
    let mutable params: ParameterDB = null
    let mutable ext : string = ""
-
+   let mutable system : LcsManager = null
    let ProcessArguments args = 
       do ext <- "txt"
 
