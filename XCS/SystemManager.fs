@@ -17,6 +17,7 @@ module SystemManager =
       | "6-multiplexer" -> new Multiplexer(pms)
       | _ -> failwith (sprintf "Unknown Environemtne specified '%s'" str)
 
+   [<AllowNullLiteral>]
    type LcsManager(``params``: ParameterDB) =      
       let expParams = ``params``.GetSubject("experiments")
       let firstExperiment = expParams.TryGetInteger "first experiment" 0
