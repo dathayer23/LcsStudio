@@ -7,7 +7,7 @@ open Params
 open SystemManager
 
 module Program = 
-   let mutable params: ParameterDB = null
+   let mutable ``params``: ParameterDB = null
    let mutable ext : string = ""
    let mutable system : LcsManager = null
    let ProcessArguments args = 
@@ -23,16 +23,20 @@ module Program =
       if File.Exists(fileName)
       then
          let file = File.Open(sprintf "config.%s" ext, FileMode.Open)
-         do params <- Params.ReadParams(file)
+         do ``params`` <- Params.ReadParams(file)
       else
          Console.WriteLine(sprintf "Cannot find configuration file %s" fileName)
 
-   let PerformExperiment() = ()
+   let PerformExperiment() = 
+      do system <- new LcsManager(``params``)
+      system.PerformExperiments()
+      
    let ProcessStats() = ()
       
    [<EntryPoint>]
    let main argv = 
       if argv.Length = 0 
+
       then
          do Console.WriteLine("USAGE:\t\t XCS-System -f <suffix> [-v] [ -s <set>]")
          do Console.WriteLine("\t\t\t\t<suffix>   suffix for the configuration file")

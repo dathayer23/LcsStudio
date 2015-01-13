@@ -2,6 +2,7 @@
 open System
 open System.Diagnostics
 open System.IO
+open Base
 open Params
 open Action
 open TernaryCondition
@@ -60,8 +61,8 @@ module Environment =
 
     type Multiplexer(``paramDB`` : ParameterDB) =
        inherit Environment()
-       let subject = "environment::multiplexer"
-       let prms = ``paramDB``.GetSubject(subject)
+       static let classData = ClassData.NewClassData  "multiplexer_env"  "environment::multiplexer"
+       
        
        let addressSize = prms.TryGetInteger "address size" 3
        let layeredReward = prms.TryGetBool "layered reward" false
@@ -90,6 +91,7 @@ module Environment =
                    | '1' -> _b2long (acc * 2 + 1) cs
              _b2long 0 chars
 
+       
        override x.NextProblem() = x.NextInput()
 
        override x.State() = new BinaryPattern(Utility.long2binary base.CurrentState stateSize) 
