@@ -15,3 +15,4 @@ C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\obj\Debug\FsUnitTest1.
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\obj\Debug\FsUnitTest1.pdb
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\FsCheck.dll
 C:\Users\dthayer\Documents\GitHub\LcsStudio\XCS.UnitTests\bin\Debug\XCS.exe
+C:\Users\David\Documents\GitHub\LcsStudio\XCS.UnitTests\obj\Debug\XCS.UNitTests.fsprojResolveAssemblyReference.cache

@@ -90,17 +90,25 @@ module TernaryCondition =
    //----------------------------------------------------------------------------------------------------------------------------
    /// ternary pattern with an associated action and a specific set of classData.parameters
    type TernaryCondition(pat:TrinaryPattern) =
-      static let classData = ClassData.NewClassData "TernaryCondition" "condition::Ternary"
-      static let SetParameters (pms: ParameterDB) =  classData.SetParameters(pms)
+      inherit ParameterizedClass()
 
-      let mutable dontCareProb : double = classData.parameters.TryGetDouble "DontCareProb" 0.25
-      let mutable crossoverType : recombinationType  = GetRecombinationType (classData.parameters.TryGetInteger "CrossoverType" 1)
-      let mutable mutationType : mutationType = GetMutationType(classData.parameters.TryGetInteger "MutationType" 1)
-      let mutable flagMutationWithDontCare = classData.parameters.TryGetBool "FlagMutationWithDontCare" true
+      let mutable dontCareProb : double =  0.25
+      let mutable crossoverType : recombinationType  = recombinationType.Uniform
+      let mutable mutationType : mutationType = mutationType.Uniform
+      let mutable flagMutationWithDontCare =  true
       let mutable pattern = pat
       
       new (size: int) = TernaryCondition(TrinaryPattern(Array.init size (fun _ -> classifierValue.Random true)))
       new (pattern:string) = TernaryCondition(TrinaryPattern.FromString(pattern))
+
+      member x.Init(pmsdb:ParameterDB) =
+         do TernaryCondition.SetClassData  "TernaryCondition" "condition::Ternary"
+         do TernaryCondition.SetParameters pmsdb 
+         do dontCareProb <- TernaryCondition.Parameters.TryGetDouble "DontCareProb" 0.25
+         do crossoverType <- GetRecombinationType (TernaryCondition.Parameters.TryGetInteger "CrossoverType" 1)
+         do mutationType <- GetMutationType(TernaryCondition.Parameters.TryGetInteger "MutationType" 1)
+         do flagMutationWithDontCare <- TernaryCondition.Parameters.TryGetBool "FlagMutationWithDontCare" true
+         
 
       member x.Size = pattern.Size
       member x.Pattern = pattern.Pattern

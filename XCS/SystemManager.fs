@@ -14,11 +14,11 @@ open ExperimentStats
 module SystemManager = 
    let CreateEnvironment str pms = 
       match str with
-      | "6-multiplexer" -> new Multiplexer(pms)
+      | "multiplexer" -> new Multiplexer(pms)
       | _ -> failwith (sprintf "Unknown Environemtne specified '%s'" str)
 
    [<AllowNullLiteral>]
-   type LcsManager(``params``: ParameterDB) =      
+   type LcsManager(``params``: ParameterDB) =     
       let expParams = ``params``.GetSubject("experiments")
       let firstExperiment = expParams.TryGetInteger "first experiment" 0
       let numExperiments = expParams.TryGetInteger "number of experiments" 0
@@ -53,7 +53,6 @@ module SystemManager =
       let saveAgentReport expNo problemNo = ()
       let saveAgentState  expNo problemNo = ()
       let restoreAgent expNo = ()
-
       member x.PerformExperiments() = 
          let mutable statisticsFile = null
          let mutable traceFile = null     

@@ -12,3 +12,17 @@ C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.Resour
 C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.csproj.GenerateResource.Cache
 C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.exe
 C:\Users\dthayer\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\LcsStudio.exe.config
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.exe
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\LcsStudio.exe
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\LcsStudio.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.csprojResolveAssemblyReference.cache
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\MainWindow.baml
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\MainWindow.g.cs
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\App.g.cs
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio_MarkupCompile.cache
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.g.resources
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.Properties.Resources.resources
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.Resource1.resources
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.csproj.GenerateResource.Cache
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.pdb
