@@ -15,7 +15,7 @@ module SystemManager =
    let CreateEnvironment str pms = 
       match str with
       | "multiplexer" -> new Multiplexer(pms)
-      | _ -> failwith (sprintf "Unknown Environemtne specified '%s'" str)
+      | _ -> failwith (sprintf "Unknown Environement specified '%s'" str)
 
    [<AllowNullLiteral>]
    type LcsManager(``params``: ParameterDB) =     
