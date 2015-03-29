@@ -1,6 +1,7 @@
 ﻿namespace BamaLlama.XCS
 
 open System
+open System.Diagnostics
 open System.IO
 open Microsoft.FSharp.Core
 
@@ -17,6 +18,14 @@ module Params =
       member x.Integer = match x with Int v -> v | _ -> raise (ParameterException "Parameter is not an integer type")
       member x.Bool = match x with Bl v -> v | _ -> raise (ParameterException "Parameter is not a boolean type")
       member x.String = match x with Str v -> v | _ -> raise (ParameterException "Parameter is not a string type")
+      override x.ToString() = 
+         match x with 
+         | Dbl v -> v.ToString("0.###")
+         | Int v -> v.ToString()
+         | Bl v -> v.ToString()
+         | Str s -> s
+         | Error s -> "Error: " + s
+
       static member FromString (str:string) = 
          match str.ToLower() with
          | "on"
@@ -28,6 +37,7 @@ module Params =
          | _ when IsInt(str) -> Int(ToInt(str))
          | _ -> Str(str)
 
+   [<DebuggerDisplay("{Name}:{Param.ToString()}")>]
    type NamedParam = { Name: string; Param : param }
    
    let NamedParamFromString (str:string) = 

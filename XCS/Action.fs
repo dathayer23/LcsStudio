@@ -17,7 +17,9 @@ module Action =
 
    type Action(i) = 
       //inherit ActionBase()
-      static let classData = ClassData.NewClassData "binary_action" "action::binary"
+      static let mutable classData = ClassData.Empty //NewClassData "binary_action" "action::binary"
+      static let mutable actionParams = new Parameters()
+      static let mutable initialized = false
       static let maxAction = classData.parameters.TryGetInteger "MaxAction" 8 
       
       let mutable action:int =  i % maxAction      
@@ -32,6 +34,11 @@ module Action =
       member x.Next : unit -> int = fun () ->
          do action <- (action + 1) % maxAction
          action
+
+      static member Init(parameterDB : ParameterDB) =
+         do classData <- ClassData.NewClassData "action_base" "action" parameterDB
+         do actionParams <- classData.parameters
+         do initialized <- true
 
       static member Random() = new Action( Utility.dice(maxAction - 1))     
            

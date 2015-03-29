@@ -19,7 +19,8 @@ module SystemManager =
 
    [<AllowNullLiteral>]
    type LcsManager(``params``: ParameterDB) =     
-      let expParams = ``params``.GetSubject("experiments")
+      let (classData:ClassData) = ClassData.NewClassData "experiment_manager" "experiments"  ``params``
+      let expParams = classData.parameters
       let firstExperiment = expParams.TryGetInteger "first experiment" 0
       let numExperiments = expParams.TryGetInteger "number of experiments" 0
       let firstLearningProblem = expParams.TryGetInteger "first problem" 0
@@ -53,6 +54,7 @@ module SystemManager =
       let saveAgentReport expNo problemNo = ()
       let saveAgentState  expNo problemNo = ()
       let restoreAgent expNo = ()
+
       member x.PerformExperiments() = 
          let mutable statisticsFile = null
          let mutable traceFile = null     

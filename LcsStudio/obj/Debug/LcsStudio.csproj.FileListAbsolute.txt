@@ -26,3 +26,8 @@ C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.Properti
 C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.Resource1.resources
 C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.csproj.GenerateResource.Cache
 C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\obj\Debug\LcsStudio.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\FsCheck.Xunit.dll
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\xunit.dll
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\FsCheck.Xunit.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\FsCheck.Xunit.xml
+C:\Users\David\Documents\GitHub\LcsStudio\LcsStudio\bin\Debug\xunit.xml

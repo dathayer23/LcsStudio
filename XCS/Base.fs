@@ -6,23 +6,24 @@ module Base =
       member x.SetParameters (pms: ParameterDB) =  x.parameters <- pms.GetSubject(x.tagName)
       member x.ClassName : string = x.className
       member x.TagName : string = x.tagName
-      static member NewClassData className tagName = 
+      static member Empty =  ClassData.NewClassData "" "" null
+      static member NewClassData className tagName (paramDB: ParameterDB) = 
          { 
             className = className; 
             tagName = tagName; 
-            parameters = new Parameters([]) 
+            parameters = paramDB.GetSubject(tagName)
          }
 
 
-   type ParameterizedClass() = 
-      static let mutable classData = ClassData.NewClassData "ClassData"  "ClassData"
-      static member SetParameters (prms: ParameterDB) = classData.SetParameters prms
-      static member SetClassData className  tagName  = do classData <- ClassData.NewClassData className tagName
-      static member ClassName = classData.ClassName
-      static member TagName = classData.TagName
-      static member Parameters with get() =  classData.parameters and set(v) = classData.parameters <- v
+   type ParameterizedClass(className, tagName, paramDB) = 
+      let mutable classData = ClassData.NewClassData className tagName paramDB
+      member x.SetParameters (prms: ParameterDB) = classData.SetParameters prms
+      member x.SetClassData className  tagName paramDB  = do classData <- ClassData.NewClassData className tagName paramDB
+      member x.ClassName = classData.ClassName
+      member x.TagName = classData.TagName
+      member x.Parameters with get() =  classData.parameters and set(v) = classData.parameters <- v
 
-   type  ExplorationStrategy = Greedy | Explore | Random | Probing
+   type ExplorationStrategy = Greedy | Explore | Random | Probing
    type CoveringStrategy = Standard | ActionBased
    type PopInitStrategy = Random | Empty | Load
    type DiscoveryStrategy = GA | Roulette | NoDiscovery
@@ -103,15 +104,15 @@ module Base =
       }
    with
       static member Empty =
-      {
-            totalSteps = 0
-            totalLearnngSteps =  0
-            totalTime =  0
-            problemSteps =  0
-            totalReward =  0.0
-            systemError =  0.0
-            maxAction =  8
-      }
+         {
+               totalSteps = 0
+               totalLearnngSteps =  0
+               totalTime =  0
+               problemSteps =  0
+               totalReward =  0.0
+               systemError =  0.0
+               maxAction =  8
+         }
       static member FromParameters (pms:Parameters) =
          {
             totalSteps = pms.TryGetInteger "total experiment steps" 0
@@ -133,21 +134,21 @@ module Base =
       }
    with 
       static member Empty =
-      {
-         maxPopulation = 100
-         populationSize =  0
-         macroSize =  0
-         populationInit = PopInitStrategy.Empty
-         populationInitFile = "classifiers.txt"
-      }
+         {
+            maxPopulation = 100
+            populationSize =  0
+            macroSize =  0
+            populationInit = PopInitStrategy.Empty
+            populationInitFile = "classifiers.txt"
+         }
       static member FromParameters (pms:Parameters) = 
-      {
-         maxPopulation = pms.TryGetInteger "max population size" 100
-         populationSize =  0
-         macroSize =  0
-         populationInit =   SelectPopInitStrategy (pms.TryGetString "population init" "default")
-         populationInitFile = pms.TryGetString "population init file" "classifiers.txt"
-      }
+         {
+            maxPopulation = pms.TryGetInteger "max population size" 100
+            populationSize =  0
+            macroSize =  0
+            populationInit =   SelectPopInitStrategy (pms.TryGetString "population init" "default")
+            populationInitFile = pms.TryGetString "population init file" "classifiers.txt"
+         }
 
    type ClassifierParameters = 
       {
@@ -184,7 +185,7 @@ module Base =
             learningRate = 0.8
             discountFactor = 0.2
          }
-      static member FromParams (pms:Parameters) = 
+      static member FromParameters (pms:Parameters) = 
          {
             initPrediction = pms.TryGetDouble "prediction init" 0.0
             initError = pms.TryGetDouble "error init" 0.0
@@ -225,7 +226,7 @@ module Base =
             probRandomAction = 0.0
          }
 
-      static member FromParams (pms:Parameters) = 
+      static member FromParameters (pms:Parameters) = 
          let strategy, prob = SelectActionStrategy (pms.TryGetString " " "default")
          {
             coveringStrategy = SelectCoverStrategy (pms.TryGetString "covering strategy" "standard")
@@ -266,7 +267,7 @@ module Base =
             useCrossover =  true
             useMutation =  true
          }
-      static member FromParams (pms:Parameters) = 
+      static member FromParameters (pms:Parameters) = 
          {
             discoveryComponent = SelectDiscoveyComponent(pms.TryGetString "discovery component" "default")
             flagDiscoveryComponent = pms.TryGetBool " " true;
@@ -316,7 +317,7 @@ module Base =
             deltaDel =  0.0
          }
 
-      static member FromParams (pms:Parameters) =
+      static member FromParameters (pms:Parameters) =
          let strategy, flag = SelectDeletionStrategy (pms.TryGetString "deletion strategy" "default")
          {
             //subsumption deletion parameters
@@ -334,3 +335,24 @@ module Base =
             thetaDel = pms.TryGetDouble "theta delete" 0.0
             deltaDel = pms.TryGetDouble "delta delete" 0.0
          }
+
+
+   type StaticClassData(clss:string, tag:string) =
+      let mutable  classData =  ClassData.NewClassData clss tag null
+      let mutable initialized = false
+      let mutable nextId = 0
+      member x.Initialized = initialized
+      member x.TagName = classData.TagName
+      member x.ClassName = classData.ClassName
+      member x.SetParameters pms = 
+         do classData <- ClassData.NewClassData clss tag pms
+         do initialized <- true
+         x
+
+      member x.Parameters = classData.parameters
+      member x.NextId() = 
+         lock x (fun () -> 
+            let ret = nextId
+            do nextId <- nextId + 1
+            ret)
+   

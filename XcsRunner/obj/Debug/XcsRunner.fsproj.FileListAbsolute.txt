@@ -1,0 +1,12 @@
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\XcsRunner.exe.config
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\XcsRunner.XML
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\XcsRunner.exe
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\XcsRunner.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\FSharp.Core.dll
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\XCS.exe
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\XCS.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\XCS.xml
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\bin\Debug\FSharp.Core.xml
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\obj\Debug\XcsRunner.fsprojResolveAssemblyReference.cache
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\obj\Debug\XcsRunner.exe
+C:\Users\David\Documents\GitHub\LcsStudio\XcsRunner\obj\Debug\XcsRunner.pdb

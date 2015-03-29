@@ -87,29 +87,30 @@ module TernaryCondition =
       | 3 -> recombinationType.TwoPoint
       | _ -> failwith "Invalid recombination type"
 
+      
    //----------------------------------------------------------------------------------------------------------------------------
    /// ternary pattern with an associated action and a specific set of classData.parameters
    type TernaryCondition(pat:TrinaryPattern) =
-      inherit ParameterizedClass()
+      static let mutable classData = new StaticClassData("TernaryCondition","condition::Ternary")
+      //inherit ParameterizedClass()
 
-      let mutable dontCareProb : double =  0.25
-      let mutable crossoverType : recombinationType  = recombinationType.Uniform
-      let mutable mutationType : mutationType = mutationType.Uniform
-      let mutable flagMutationWithDontCare =  true
+      static let  mutable dontCareProb : double =  0.25
+      static let mutable crossoverType : recombinationType  = recombinationType.Uniform
+      static let mutable mutationType : mutationType = mutationType.Uniform
+      static let mutable flagMutationWithDontCare =  true
       let mutable pattern = pat
       
       new (size: int) = TernaryCondition(TrinaryPattern(Array.init size (fun _ -> classifierValue.Random true)))
       new (pattern:string) = TernaryCondition(TrinaryPattern.FromString(pattern))
 
-      member x.Init(pmsdb:ParameterDB) =
-         do TernaryCondition.SetClassData  "TernaryCondition" "condition::Ternary"
-         do TernaryCondition.SetParameters pmsdb 
-         do dontCareProb <- TernaryCondition.Parameters.TryGetDouble "DontCareProb" 0.25
-         do crossoverType <- GetRecombinationType (TernaryCondition.Parameters.TryGetInteger "CrossoverType" 1)
-         do mutationType <- GetMutationType(TernaryCondition.Parameters.TryGetInteger "MutationType" 1)
-         do flagMutationWithDontCare <- TernaryCondition.Parameters.TryGetBool "FlagMutationWithDontCare" true
+      static member Init(parameterDB:ParameterDB) =
+         do classData <- classData.SetParameters parameterDB
+         do dontCareProb <- classData.Parameters.TryGetDouble "DontCareProb" 0.25
+         do crossoverType <- GetRecombinationType (classData.Parameters.TryGetInteger "CrossoverType" 1)
+         do mutationType <- GetMutationType(classData.Parameters.TryGetInteger "MutationType" 1)
+         do flagMutationWithDontCare <- classData.Parameters.TryGetBool "FlagMutationWithDontCare" true
          
-
+      static member Initialized = classData.Initialized
       member x.Size = pattern.Size
       member x.Pattern = pattern.Pattern
       member x.Specificness = 
@@ -119,7 +120,7 @@ module TernaryCondition =
             then 0 else 1) x.Pattern
       
       member x.Genericness = 1.0 - (float)x.Specificness/ (float)x.Size
-      member x.Match (y:IPattern<patternValue>) = 
+      member x.Match (y:IPattern<patternValue>) : bool = 
          do assert(x.Size = y.Size)
          Array.forall2 (fun (xc:classifierValue) (yc:patternValue) -> matchValue xc yc) x.Pattern y.Pattern 
 
@@ -139,38 +140,38 @@ module TernaryCondition =
 
          (new TernaryCondition(pat)) 
 
-      member x.Mutate mu = 
+      member x.Mutate (mu, (?y:BasePattern)) : TernaryCondition = 
+         let mutate3() = 
+            Array.map 
+               (fun x ->  
+                  if biasedCoin mu 
+                  then  classifierValue.Random flagMutationWithDontCare 
+                  else x) x.Pattern   
+
+         let mutate2() = 
+            Array.map 
+               (fun (x:classifierValue) ->  
+                  if biasedCoin mu 
+                  then x.RandomOther flagMutationWithDontCare 
+                  else x) x.Pattern
+
+         let mutateU (y:BasePattern) =             
+             Array.map2 
+               (fun xv yv -> 
+                  if biasedCoin mu 
+                  then mutate1 xv yv flagMutationWithDontCare 
+                  else xv) x.Pattern y.Pattern
+            
          let pat = 
             match mutationType with 
-            | mutationType.ThreeValue -> 
-               Array.map 
-                  (fun x ->  
-                     if biasedCoin mu 
-                     then  classifierValue.Random flagMutationWithDontCare 
-                     else x) x.Pattern         
-                       
-            | mutationType.TwoValue -> 
-               Array.map 
-                  (fun (x:classifierValue) ->  
-                     if biasedCoin mu 
-                     then x.RandomOther flagMutationWithDontCare 
-                     else x) x.Pattern
+            | mutationType.Uniform when Option.isSome(y) -> 
+               assert (y.Value.Length = x.Size)
+               mutateU y.Value
 
-         (new TernaryCondition(TrinaryPattern(pat)))    
-
-      member x.Mutate ((y:BasePattern, mu)) = 
-         assert (y.Length = x.Size)
-         match mutationType with 
-         | mutationType.Uniform -> 
-            let pat = 
-               Array.map2 
-                  (fun xv yv -> 
-                     if biasedCoin mu 
-                     then mutate1 xv yv flagMutationWithDontCare 
-                     else xv) x.Pattern y.Pattern
-            (new TernaryCondition(TrinaryPattern(pat)))
-
-         | _ -> x.Mutate mu
+            | mutationType.ThreeValue -> mutate3()
+            | mutationType.TwoValue -> mutate2()    
+                  
+         (new TernaryCondition(TrinaryPattern(pat)))
 
       interface IRandomizable<TernaryCondition> with
          member x.Random() = 

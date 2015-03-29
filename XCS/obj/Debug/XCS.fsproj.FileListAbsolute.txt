@@ -12,3 +12,6 @@ C:\Users\David\Documents\GitHub\LcsStudio\XCS\bin\Debug\FSharp.Core.dll
 C:\Users\David\Documents\GitHub\LcsStudio\XCS\bin\Debug\FSharp.Core.xml
 C:\Users\David\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.exe
 C:\Users\David\Documents\GitHub\LcsStudio\XCS\obj\Debug\XCS.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\XCS\bin\Debug\FsCheck.dll
+C:\Users\David\Documents\GitHub\LcsStudio\XCS\bin\Debug\FsCheck.pdb
+C:\Users\David\Documents\GitHub\LcsStudio\XCS\bin\Debug\FsCheck.xml

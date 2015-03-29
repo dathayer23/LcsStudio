@@ -11,32 +11,12 @@ open ConditionBase
 open TernaryCondition
 
 module Classifier = 
-   
-   type StaticClassifierData(clss:string, tag:string) =
-      static let mutable  classData =  ClassData.NewClassData "" ""
-      let mutable nextId = 0
-      member x.TagName = classData.TagName
-      member x.ClassName = classData.ClassName
-      member x.SetParameters pms = classData.SetParameters pms
-      member x.Parameters = classData.parameters
-      member x.NextId() = 
-         lock x (fun () -> 
-            let ret = nextId
-            do nextId <- nextId + 1
-            ret)
-   
 
    type classifier(cond : TernaryCondition , act:Action) = 
-      static let classData = new StaticClassifierData("xcs_classifier","classifier")
-      static let SetParameters (pms: ParameterDB) =  classData.SetParameters pms
-
+      static let mutable classData = new StaticClassData("xcs_classifier","classifier")
       static let parms = classData.Parameters
-      //static let mutable recombinationType = recombinationType.Uniform 
-      static let Init( prms : ParameterDB) = 
-         do classData.SetParameters prms
-         //do recombinationType <- parms.TryGetInteger "recombination type" 1
-         ()
-
+      static let mutable recombinationType = recombinationType.Uniform 
+  
       let identifier = classData.NextId()
 
       let mutable (condition : TernaryCondition) = cond
@@ -52,6 +32,11 @@ module Classifier =
       /// Constructors
       new (size:int, maxAction) = new classifier(new TernaryCondition(size), new Action(dice maxAction))
 
+      // static members
+      static member Init(parameterDB) = 
+         do classData <- classData.SetParameters parameterDB
+         do recombinationType <- GetRecombinationType (classData.Parameters.TryGetInteger "recombination type" 1)
+      static member Initialized = classData.Initialized
       /// properties
       member x.Id = identifier
       member x.ClassName : string = classData.ClassName
@@ -78,7 +63,7 @@ module Classifier =
       
 
       member x.Mutate mutationProb inputs = 
-         do condition <- condition.Mutate ((inputs, mutationProb))
+         do condition <- condition.Mutate (mutationProb, inputs)
          do action.Mutate(mutationProb)
          ()
 

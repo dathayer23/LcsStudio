@@ -76,19 +76,23 @@ module ClassifierSystem =
          ()
    
    type ClassifierSystem(size:int, width:int) =
-      inherit ParameterizedClass()
-      
-      let mutable classifiers : classifier array = [||]
-      let mutable statistics  = new ClassifierStatistics()
-      let mutable expParams = ExperimentParameters.Empty
-      let mutable popParams = PopulationParameters.Empty
-      let mutable classifierParams =  ClassifierParameters.Empty
-      let mutable strategyParams = StrategyParameters.Empty
-      let mutable gaParams = GaParameters.Empty
-      let mutable deletionParams = DeletionParameters.Empty
+      // Static class data
+      static let mutable (classData:ClassData) = ClassData.Empty //ClassData.NewClassData "xcs_classifier_system" "classifier_system" paramDB
+      static let mutable clsParams = new Parameters() //classData.parameters
+      static let mutable expParams = ExperimentParameters.FromParameters(clsParams)
+      static let mutable popParams = PopulationParameters.FromParameters(clsParams)
+      static let mutable classifierParams =  ClassifierParameters.FromParameters(clsParams)
+      static let mutable strategyParams = StrategyParameters.FromParameters(clsParams)
+      static let mutable gaParams = GaParameters.FromParameters(clsParams)
+      static let mutable deletionParams = DeletionParameters.FromParameters(clsParams)
+      static let mutable initialized = false
 
+      //instance Data
+      let mutable classifiers : classifier array = [||]
+      let mutable statistics  = new ClassifierStatistics()      
       let mutable matchSet = [||] 
       let mutable actionSet = [||]
+      let mutable predictionArray : SystemPrediction[] = [||]
 
       let createCover (matchSet :classifier array) = 
          if matchSet.Length = 0 then true
@@ -103,7 +107,7 @@ module ClassifierSystem =
       let initRandomPopulation() = 
          do [1 .. popParams.maxPopulation ]
                 |> List.map (
-                     fun _ -> new classifier(width, expParams.maxAction)
+                     fun _ -> new classifier(classifierParams.classifierWidth, expParams.maxAction)
                                   |> initClassifier 
                                   |> insertClassifier) |> ignore
          do popParams.macroSize <- classifiers.Length
@@ -132,15 +136,17 @@ module ClassifierSystem =
 
       let performNmaCovering matchSet pattern = false
 
-      member x.Init (``params``:ParameterDB) = 
-         do ClassifierSystem.SetClassData "xcs_classifier_system" "classifier_system"
-         do ClassifierSystem.SetParameters ``params``
-         do expParams <- ExperimentParameters.FromParameters ClassifierSystem.Parameters
-         do popParams <- PopulationParameters.FromParameters ClassifierSystem.Parameters
-         do classifierParams <- ClassifierParameters.FromParams ClassifierSystem.Parameters
-         do strategyParams <- StrategyParameters.FromParams ClassifierSystem.Parameters
-         do gaParams <- GaParameters.FromParams  ClassifierSystem.Parameters
-         do deletionParams <- DeletionParameters.FromParams ClassifierSystem.Parameters
+      static member Init (``params``:ParameterDB) = 
+         do classData <- ClassData.NewClassData "xcs_classifier_system" "classifier_system" ``params``
+         do clsParams <- classData.parameters
+
+         do expParams <- ExperimentParameters.FromParameters clsParams
+         do popParams <- PopulationParameters.FromParameters clsParams
+         do classifierParams <- ClassifierParameters.FromParameters clsParams
+         do strategyParams <- StrategyParameters.FromParameters clsParams
+         do gaParams <- GaParameters.FromParameters  clsParams
+         do deletionParams <- DeletionParameters.FromParameters clsParams
+         do initialized <- true
 
       member x.PerformCovering(matchSet :classifier array, pattern : BinaryPattern) = 
          match strategyParams.coveringStrategy with
