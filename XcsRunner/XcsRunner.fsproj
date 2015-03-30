@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Program.fs" />
     <None Include="App.config" />
+    <None Include="confsys.mp6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XCS\XCS.fsproj">

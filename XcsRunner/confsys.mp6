@@ -23,13 +23,13 @@
              theta GA = 25
 crossover probability = 0.8
  mutation probability = 0.04
-         epsilon zero = 10
+         epsilon zero = 10.0
                    vi = 5
                 alpha = 0.1
       prediction init = 10.0
            error init = 0.0
          fitness init = 0.01
-        set size init = 1
+        set size init = 1.0
       population init = empty
  exploration strategy = SEMIUNIFORM:1.0
     deletion strategy = ACCURACY-BASED

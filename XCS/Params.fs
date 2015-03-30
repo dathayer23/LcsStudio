@@ -14,10 +14,10 @@ module Params =
 
    type param = Dbl of double | Int of int | Bl of bool | Str of string | Error of string
    with 
-      member x.Double =  match x with Dbl v -> v | _ -> raise (ParameterException "Parameter is not a double type")
+      member x.Double =  match x with Dbl v -> v | Int i -> (double)i | _ -> raise (ParameterException "Parameter is not a double type")
       member x.Integer = match x with Int v -> v | _ -> raise (ParameterException "Parameter is not an integer type")
       member x.Bool = match x with Bl v -> v | _ -> raise (ParameterException "Parameter is not a boolean type")
-      member x.String = match x with Str v -> v | _ -> raise (ParameterException "Parameter is not a string type")
+      member x.String = match x with Str v -> v | Bl v -> v.ToString() | _ -> raise (ParameterException "Parameter is not a string type")
       override x.ToString() = 
          match x with 
          | Dbl v -> v.ToString("0.###")

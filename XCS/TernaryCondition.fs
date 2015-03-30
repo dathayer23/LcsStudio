@@ -103,12 +103,27 @@ module TernaryCondition =
       new (size: int) = TernaryCondition(TrinaryPattern(Array.init size (fun _ -> classifierValue.Random true)))
       new (pattern:string) = TernaryCondition(TrinaryPattern.FromString(pattern))
 
-      static member Init(parameterDB:ParameterDB) =
+      static member NewTernaryCondition(``params``, (pat:TrinaryPattern)) = 
+         let tcnd = new TernaryCondition(pat)
+         if TernaryCondition.Initialized then tcnd
+         else
+            do TernaryCondition.Init(``params``)
+            tcnd
+
+      static member NewTernaryCondition(``params``, (size:int)) = 
+         let tcnd = new TernaryCondition(size)
+         if TernaryCondition.Initialized then tcnd
+         else
+            do TernaryCondition.Init(``params``)
+            tcnd
+
+      static member private Init(parameterDB:ParameterDB) =
          do classData <- classData.SetParameters parameterDB
          do dontCareProb <- classData.Parameters.TryGetDouble "DontCareProb" 0.25
          do crossoverType <- GetRecombinationType (classData.Parameters.TryGetInteger "CrossoverType" 1)
          do mutationType <- GetMutationType(classData.Parameters.TryGetInteger "MutationType" 1)
          do flagMutationWithDontCare <- classData.Parameters.TryGetBool "FlagMutationWithDontCare" true
+         do classData.Initialized <- true
          
       static member Initialized = classData.Initialized
       member x.Size = pattern.Size

@@ -11,7 +11,7 @@ module Base =
          { 
             className = className; 
             tagName = tagName; 
-            parameters = paramDB.GetSubject(tagName)
+            parameters = match paramDB with | null -> Parameters() | _ ->  paramDB.GetSubject(tagName)
          }
 
 
@@ -73,7 +73,8 @@ module Base =
           then  failwith (sprintf "'Biased' parameter (%f) out of range (0.0,1.0]" prb)
 
           (ActionSelectionStrategy.SemiUniform, Some( prb))
-      | _ -> failwith (sprintf "Unrecognized Exploration Policy '%s'" str)
+      | _ ->  (ActionSelectionStrategy.Proportional, None)
+
    let SelectExplorationStrategy (str:string) : ExplorationStrategy = 
       match str.ToLower() with 
       | "greedy" -> ExplorationStrategy.Greedy
@@ -89,7 +90,7 @@ module Base =
       | "accuracy-based" -> DeletionStrategy.RwsFitness, true
       | "random-with-accuracy" -> DeletionStrategy.RandomWithAccuracy, true
       | "random" -> DeletionStrategy.Random, false
-      | _ -> failwith (sprintf "Unrecognized Deletion Policy '%s'" str)
+      | _ -> DeletionStrategy.Random, false
    
    
    type ExperimentParameters = 
@@ -227,7 +228,7 @@ module Base =
          }
 
       static member FromParameters (pms:Parameters) = 
-         let strategy, prob = SelectActionStrategy (pms.TryGetString " " "default")
+         let strategy, prob = SelectActionStrategy (pms.TryGetString " " "proportional")
          {
             coveringStrategy = SelectCoverStrategy (pms.TryGetString "covering strategy" "standard")
             tethaNma = pms.TryGetDouble "covering threshold" 0.0
@@ -341,7 +342,7 @@ module Base =
       let mutable  classData =  ClassData.NewClassData clss tag null
       let mutable initialized = false
       let mutable nextId = 0
-      member x.Initialized = initialized
+      member x.Initialized with get() =  initialized and set(v) = initialized <- v
       member x.TagName = classData.TagName
       member x.ClassName = classData.ClassName
       member x.SetParameters pms = 

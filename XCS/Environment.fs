@@ -12,11 +12,11 @@ module Environment =
 
    [<AbstractClass>]
    type Environment() = 
-      let mutable numConfigurations = 0
+      
       let mutable currentConfiguration = 0
       let mutable currentState = 0
       
-      member x.NumConfigurations with get() = numConfigurations and set(v) = numConfigurations <- v
+      
       member x.CurrentConfiguration with get() = currentConfiguration and set(v) = currentConfiguration <- v
       member x.CurrentState with get() = currentState and set(v) = currentState <- v
       member x.SubjectName = "EnvironmentBase"
@@ -44,7 +44,7 @@ module Environment =
       default x.Stop() = true
       abstract member Trace : StreamWriter -> unit
       abstract member ResetInput : unit -> unit
-      abstract member NextInput : unit -> bool
+      abstract member NextInput : int -> bool
       abstract member RestoreState : StreamReader -> unit
       abstract member SaveState : StreamWriter -> unit
       abstract member SingleStep : unit -> bool
@@ -59,17 +59,17 @@ module Environment =
       abstract member NextProblem : unit -> bool
       default x.NextProblem() = false
 
-    type Multiplexer(paramDB : ParameterDB) =
-       inherit Environment()
-       let prms = paramDB.GetSubject("multiplexer")
-       static let classData = ClassData.NewClassData  "multiplexer_env"  "environment::multiplexer"
+    type Multiplexer() =
+       inherit Environment() 
+       //let prms = paramDB.GetSubject("multiplexer")
+       static let mutable classData = ClassData.NewClassData  "multiplexer_env"  "environment::multiplexer" null
        
        
-       let addressSize = prms.TryGetInteger "address size" 3
-       let layeredReward = prms.TryGetBool "layered reward" false
-       let states = addressSize + (1 <<< addressSize)
-       do base.NumConfigurations <- (1 <<< states)
-       let stateSize = addressSize + (int)(2.0 ** (double)addressSize)
+       static let mutable addressSize = classData.parameters.TryGetInteger "address size" 3
+       static let mutable layeredReward = classData.parameters.TryGetBool "layered reward" false
+       static let mutable states = addressSize + (1 <<< addressSize)
+       static let mutable numConfigurations = (1 <<< states)
+       static let mutable stateSize = addressSize + (int)(2.0 ** (double)addressSize)
        
        let mutable inputs : State = new BinaryPattern(states)
        let mutable firstProblem = true
@@ -92,8 +92,21 @@ module Environment =
                    | '1' -> _b2long (acc * 2 + 1) cs
              _b2long 0 chars
 
-       
-       override x.NextProblem() = x.NextInput()
+       static member NewMultiplexer(``params``) =
+          let env = new Multiplexer()
+          do Multiplexer.Init(``params``)
+          env 
+
+       static member private Init(paramDb) =
+          do classData <- ClassData.NewClassData "multiplexer_env"  "environment::multiplexer" paramDb
+          do addressSize <- classData.parameters.TryGetInteger "address size" 3
+          do layeredReward <- classData.parameters.TryGetBool "layered reward" false
+          do states <- addressSize + (1 <<< addressSize)
+          do numConfigurations <- (1 <<< states)
+          do stateSize <- addressSize + (int)(2.0 ** (double)addressSize)
+
+
+       override x.NextProblem() = x.NextInput numConfigurations
 
        override x.State() = new BinaryPattern(Utility.long2binary base.CurrentState stateSize) 
        override x.BeginProblem(explore) = 
@@ -132,9 +145,9 @@ module Environment =
           do base.CurrentState <- 0
           do inputs <- new BinaryPattern(Utility.long2binary base.CurrentState stateSize)   
 
-       override x.NextInput() = 
+       override x.NextInput numConfigurations = 
           do base.CurrentState <- base.CurrentState + 1
-          if base.CurrentState < base.NumConfigurations
+          if base.CurrentState < numConfigurations
           then
              do inputs <- new BinaryPattern(Utility.long2binary base.CurrentState  stateSize)   
              true

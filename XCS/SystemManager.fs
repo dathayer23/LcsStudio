@@ -14,7 +14,8 @@ open ExperimentStats
 module SystemManager = 
    let CreateEnvironment str pms = 
       match str with
-      | "multiplexer" -> new Multiplexer(pms)
+      | "parity" -> Multiplexer.NewMultiplexer(pms)
+         
       | _ -> failwith (sprintf "Unknown Environement specified '%s'" str)
 
    [<AllowNullLiteral>]
@@ -50,7 +51,8 @@ module SystemManager =
       let mutable currentExperiment = -1
       let mutable currentPropblem = -1
       let mutable currentNumTestProblems = 0
-      let mutable classifierSystem : ClassifierSystem = new ClassifierSystem(0,0)
+      let mutable classifierSystem : ClassifierSystem = ClassifierSystem.NewClassifierSystem(``params``,0,0)
+      
       let saveAgentReport expNo problemNo = ()
       let saveAgentState  expNo problemNo = ()
       let restoreAgent expNo = ()

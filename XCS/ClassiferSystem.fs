@@ -136,7 +136,12 @@ module ClassifierSystem =
 
       let performNmaCovering matchSet pattern = false
 
-      static member Init (``params``:ParameterDB) = 
+      static member NewClassifierSystem(``params``:ParameterDB, size, width) = 
+         let css = new ClassifierSystem(size,width)
+         do ClassifierSystem.Init(``params``)
+         css
+
+      static member private Init (``params``:ParameterDB) = 
          do classData <- ClassData.NewClassData "xcs_classifier_system" "classifier_system" ``params``
          do clsParams <- classData.parameters
 
