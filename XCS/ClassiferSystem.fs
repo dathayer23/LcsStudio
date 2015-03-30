@@ -11,6 +11,7 @@ open Action
 open ConditionBase
 open TernaryCondition
 open Classifier
+open Environment
 
 module ClassifierSystem = 
    type SystemPrediction = 
@@ -36,6 +37,9 @@ module ClassifierSystem =
       let mutable numCovers = 0
       let mutable numSubsumptions = 0
 
+      member x.SystemError with get() = systemError and set(v) = systemError <- v
+      member x.NumGAs with get() = numGAs and set(v) = numGAs <- v
+      member x.IncNumGas() = x.NumGAs <- x.NumGAs + 1
       member x.Reset() = 
          do avgPrediction <- 0.0
          do avgFitness <- 0.0
@@ -50,6 +54,7 @@ module ClassifierSystem =
          do numGAs <- 0
          do numCovers <- 0
          do  numSubsumptions <- 0
+         x
 
       member x.ToCsvString() : string =
         sprintf  "%f,%f,%f,%f,%f,%f,%f,%f,%f,%d,%d,%d,%d" 
@@ -92,8 +97,11 @@ module ClassifierSystem =
       let mutable statistics  = new ClassifierStatistics()      
       let mutable matchSet = [||] 
       let mutable actionSet = [||]
+      let mutable prevActionSet = [||]
       let mutable predictionArray : SystemPrediction[] = [||]
-
+      let mutable (env:Environment) = null
+      let mutable (prevInput:BinaryPattern) = BinaryPattern.Zero(1)
+      let mutable prevReward = 0.0
       let createCover (matchSet :classifier array) = 
          if matchSet.Length = 0 then true
          else
@@ -153,6 +161,15 @@ module ClassifierSystem =
          do deletionParams <- DeletionParameters.FromParameters clsParams
          do initialized <- true
 
+      member x.TotalSteps with get() = expParams.totalSteps and set(v) = expParams.totalSteps <- v
+      member x.TotalLearningSteps with get() = expParams.totalLearningSteps and set(v) = expParams.totalLearningSteps <- v
+      member x.ProblemSteps with get() = expParams.problemSteps and set(v) = expParams.problemSteps <- v
+      member x.TotalReward with get() = expParams.totalReward and set(v) = expParams.totalReward <- v
+
+      member x.PopulationSize with get() = popParams.populationSize and set(v) = popParams.populationSize <- v
+      member x.MacroSize with get() = popParams.macroSize and set(v) = popParams.macroSize <- v
+      
+      member x.Width = classifierParams.classifierWidth
       member x.PerformCovering(matchSet :classifier array, pattern : BinaryPattern) = 
          match strategyParams.coveringStrategy with
          | CoveringStrategy.Standard -> performStandardCovering matchSet pattern
@@ -162,12 +179,73 @@ module ClassifierSystem =
       
       member x.MatchSet(pattern : BinaryPattern) = 
          do matchSet <- Array.filter (fun (cl:classifier) -> cl.Match(pattern)) classifiers
-         matchSet
+         matchSet.Length
 
       member x.ActionSet(a:Action) = 
          do actionSet <- Array.filter (fun (cl:classifier) -> cl.Action = a) matchSet
-         actionSet
+         actionSet.Length
 
-      member x.BeginExperiment() = ()
-      member x.BeginProblem() = ()
-      member x.Step (explore, condense) = ()
+      member x.BuildPredictionArray() = ()
+      member x.SelectAction str = new Action(1)
+      member x.BeginExperiment(e) = 
+         do env <- e
+         do x.TotalSteps <- 0
+         do x.TotalLearningSteps <- 0
+         do statistics <- statistics.Reset()
+         do x.PopulationSize <- 0
+         do x.MacroSize <- 0
+         initClassifierSet()
+
+      member x.BeginProblem() = 
+         do prevActionSet <- [||]
+         do actionSet <- [||]
+         do x.ProblemSteps <- 0
+         x.TotalReward <- 0.0
+      
+      member x.EndProblem() =
+         do matchSet <- [||] 
+         actionSet <- [||]
+
+      member x.ReinforcementLearning() = ()
+      member x.NeedGa (actionSet, explorationMode) = false
+      member x.GeneticAlgorithm actionSet prevInput condensationMode = ()
+      member x.UpdateSet reward set = ()
+      member x.Step (exploreMode, condensationMode) = 
+         let currInput = new BinaryPattern(env.CurrentState, x.Width)
+         if exploreMode then x.TotalSteps <- x.TotalSteps + 1
+         let mutable performCovering = true
+         while(performCovering) do
+            let matchSetSize = x.MatchSet currInput
+            performCovering <- x.PerformCovering(matchSet, currInput)
+
+         do x.BuildPredictionArray()
+         let action = 
+            if exploreMode then x.SelectAction(strategyParams.actionSelectionStrategy)
+            else  x.SelectAction(ActionSelectionStrategy.Deterministic)
+
+         let size =  x.ActionSet(action)
+         do prevInput <- currInput
+         do env.Perform(action)
+         if env.SingleStep()
+         then 
+            let payoff = predictionArray.[action.Value].payoff
+            do statistics.SystemError <- Math.Abs(payoff - env.Reward())
+
+         do expParams.totalReward <- expParams.totalReward + env.Reward()
+
+         if (exploreMode || gaParams.flagUpdateTest) && prevActionSet.Length > 0
+         then 
+            do x.ReinforcementLearning()
+         
+         if env.Stop()
+         then  x.UpdateSet (env.Reward()) actionSet
+          
+         if (gaParams.flagDiscoveryComponent && x.NeedGa(actionSet, exploreMode))
+         then 
+            do x.GeneticAlgorithm actionSet prevInput condensationMode
+            statistics.IncNumGas()
+            
+         prevActionSet <- actionSet
+         actionSet <- [||] 
+         prevReward <- env.Reward()
+                              

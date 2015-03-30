@@ -11,6 +11,7 @@ module Environment =
    type State = BinaryPattern
 
    [<AbstractClass>]
+   [<AllowNullLiteral>]
    type Environment() = 
       
       let mutable currentConfiguration = 0
@@ -59,6 +60,7 @@ module Environment =
       abstract member NextProblem : unit -> bool
       default x.NextProblem() = false
 
+    [<AllowNullLiteral>]
     type Multiplexer() =
        inherit Environment() 
        //let prms = paramDB.GetSubject("multiplexer")

@@ -56,10 +56,15 @@ module SystemManager =
       let saveAgentReport expNo problemNo = ()
       let saveAgentState  expNo problemNo = ()
       let restoreAgent expNo = ()
+      let mutable statisticsFile = null
+      let mutable traceFile = null     
 
       member x.PerformExperiments() = 
-         let mutable statisticsFile = null
-         let mutable traceFile = null     
+         
+         let overallTimer = new Stopwatch()
+         let experimentTimer = new Stopwatch()
+         let problemTimer = new Stopwatch()
+
          let expStats : ExperimentStats ref = ref (ExperimentStats.newExperimentStats())
 
          let statsFileName currentExperiment = 
@@ -71,13 +76,30 @@ module SystemManager =
 
          let explorationFlag = false
          let condensationFlag = false
-         let openFiles currExperiment = ()
+         let openFiles currExperiment = 
+            let stats = statsFileName currentExperiment
+            let trace = traceFileName currentExperiment
+            Console.WriteLine("Opening Statistics File {0}", stats)
+            do statisticsFile <- new StreamWriter(stats)
+            Console.WriteLine("Opening Trace File {0}", trace)
+            do traceFile <- new StreamWriter(trace)
+               
          let ExecuteProblemStep() = 
             do classifierSystem.Step(explorationFlag, condensationFlag)
-            do expStats :=  (!expStats).IncProblemSteps()
-         let ExecuteProblemSteps() = ()
+            do expStats :=  (!expStats).EndProblemStep (environment.Reward())
+             
+         
+         let ExecuteProblemSteps() = 
+            let mutable run = true
+            while run do
+              ExecuteProblemStep()
+              if (!expStats).problemSteps > maxSteps || environment.Stop() 
+              then run <- false
 
-         let performProblem currProblem = 
+
+
+         let performProblem (currProblem:int)  = 
+            Console.WriteLine("Performing Problem {0}", currProblem)
             let fileStats() = ()
 
             do fileStats()
@@ -95,15 +117,34 @@ module SystemManager =
             let lastProblem = 
                firstLearningProblem + 2 * 
                         (numLearningProblems + numCondensationProblems) + numTestProblems
-
+            Console.WriteLine("First Problem is {0} Last problem is {1}", firstLearningProblem, lastProblem)
             [firstLearningProblem .. lastProblem] |> List.iter (fun i -> performProblem i)
 
-         let performExperiment currExperiment = 
+         let performExperiment (currExperiment:int) = 
+            Console.WriteLine("Performing Experiment {0}", currExperiment)
             do openFiles currExperiment
             do expStats :=  (!expStats).StartExperiment()
-            do classifierSystem.BeginExperiment()
+            do classifierSystem.BeginExperiment(environment)
             do performProblems()
-         ()
+         
+         do experimentTimer.Reset()
+         do problemTimer.Reset()
+         do overallTimer.Reset()
+
+         [firstExperiment .. (firstExperiment + numExperiments)]
+            |> List.iter (fun i -> performExperiment(i))
+
+
+      member x.PrintParams() =
+         do Console.WriteLine("first experiment : {0}", firstExperiment)
+         do Console.WriteLine("number of experiments : {0}", numExperiments)
+         do Console.WriteLine("first learning problem : {0}", firstLearningProblem)
+         do Console.WriteLine("number of learning problems : {0}", numLearningProblems)
+         do Console.WriteLine("number of condensation problems : {0}", numCondensationProblems)
+         do Console.WriteLine("Number Of Test Problemst : {0}", numTestProblems)
+         do Console.WriteLine("maximum steps : {0}", maxSteps)
+         do Console.WriteLine("do trace : {0}", doTrace)
+         do Console.WriteLine("do test environment : {0}", doTestEnvironment)
 
 
       member x.PrintSaveOptions(file:FileStream) = ()

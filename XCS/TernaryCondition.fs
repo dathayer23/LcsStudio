@@ -17,8 +17,15 @@ module TernaryCondition =
    type BinaryPattern(pat : patternValue []) = 
       let pattern = pat
       let size = (Array.length pat)
+      static member Zero(size) = 
+         let str = new String('0', size)
+         new BinaryPattern(str)
 
       new(size) = new BinaryPattern(Array.init size (fun _ -> patternValue.Random()))
+      new (i:int, size:int) = 
+        let str = long2binary i size
+        new BinaryPattern(str)
+
       new (str:string) = 
          new BinaryPattern(
             str.ToCharArray() 

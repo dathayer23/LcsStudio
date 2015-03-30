@@ -25,13 +25,17 @@ module ExperimentStats =
    with 
       static member newExperimentStats() = 
          {
-           rewardSum = 0.0; problemSteps = 0; 
+           rewardSum = 0.0; 
+           problemSteps = 0; 
            totalTimer = new Stopwatch()
            experimentTimer = new Stopwatch()
            problemTimer = new Stopwatch()
-           experimentTimes = []; problemTimes = []
-           avgProblemTime = 0L; avgLearningTime = 0.0
-           avgTestingTime = 0.0; compactStatsPrinted = false
+           experimentTimes = []; 
+           problemTimes = []
+           avgProblemTime = 0L; 
+           avgLearningTime = 0.0
+           avgTestingTime = 0.0; 
+           compactStatsPrinted = false
            currentTestProblem = 0
            compactAvgSteps = 0.0
            compactAvgRewardSum = 0.0
@@ -57,7 +61,7 @@ module ExperimentStats =
             x with avgProblemTime = x.avgProblemTime + x.problemTimer.ElapsedMilliseconds
          } 
 
-      member x.IncProblemSteps() = 
+      member x.EndProblemStep reward = 
          {
-            x with problemSteps = x.problemSteps + 1
+            x with problemSteps = x.problemSteps + 1; rewardSum = x.rewardSum + reward
          }

@@ -95,19 +95,19 @@ module Base =
    
    type ExperimentParameters = 
       {
-         totalSteps : int
-         totalLearnngSteps : int
+         mutable totalSteps : int
+         mutable totalLearningSteps : int
          totalTime : int
-         problemSteps : int
-         totalReward : double
-         systemError : double
+         mutable problemSteps : int
+         mutable totalReward : double
+         mutable systemError : double
          maxAction : int
       }
    with
       static member Empty =
          {
                totalSteps = 0
-               totalLearnngSteps =  0
+               totalLearningSteps =  0
                totalTime =  0
                problemSteps =  0
                totalReward =  0.0
@@ -117,7 +117,7 @@ module Base =
       static member FromParameters (pms:Parameters) =
          {
             totalSteps = pms.TryGetInteger "total experiment steps" 0
-            totalLearnngSteps = pms.TryGetInteger "total learning steps" 0
+            totalLearningSteps = pms.TryGetInteger "total learning steps" 0
             totalTime = pms.TryGetInteger "total time" 0
             problemSteps = pms.TryGetInteger "problem steps"  0
             totalReward = pms.TryGetDouble "total reward" 0.0

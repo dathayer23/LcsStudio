@@ -59,8 +59,8 @@
     <Compile Include="TernaryCondition.fs" />
     <Compile Include="Action.fs" />
     <Compile Include="Classifier.fs" />
-    <Compile Include="ClassiferSystem.fs" />
     <Compile Include="Environment.fs" />
+    <Compile Include="ClassiferSystem.fs" />
     <Compile Include="ExperimentStats.fs" />
     <Compile Include="SystemManager.fs" />
     <Compile Include="Program.fs" />
